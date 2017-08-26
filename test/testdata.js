@@ -14,8 +14,46 @@ const bufstry = _.split(data_y,' ').join('');
 
 // const hex_x = _.trim(data_x);
 // const hex_y = _.trim(data_y);
-console.log(`hex_x===>${bufstrx}`);
-console.log(`hex_y===>${bufstry}`);
+console.log(`hex_x===>${bufstrx},\n字节数:${bufstrx.length}`);
+console.log(`hex_y===>${bufstry},\n字节数:${bufstrx.length}`);
 //---------解析buf-------------
 const bufx = Buffer.from(bufstrx, 'hex');
 const bufy = Buffer.from(bufstry, 'hex');
+
+// 说明：
+// 55开始600个字节组成300个16位二进制数，高位在前低位在后，最高位为1表示负数，取低15位数，这个是正弦波电流数据，取第50个至249个，一个周期；
+// EE开始600个字节是采样感应电压数据，高位在前低位在后组成300个16位二进制数，最高位为1表示负数，取低15位数，同样取第50个至249个，一个周期与前面相对应。
+// 第一组数据作为横坐标，第二组数据纵坐标，横坐标上升阶段用一种颜色，下降阶段用另一种颜色表示，组成一组闭合曲线。
+// 注意：第二组数据纵坐标是积分值，第2个是第1、2两个相加的值，第3个是1、2、3累加的值，负数则减。
+
+const getdata = (buf)=>{
+  if(buf.length < 601){
+    return {
+      result:false,
+      msg:'字节数不够'
+    };
+  }
+  if(buf[0] !== 0x55 && buf[0] !== 0xEE){
+    return {
+      result:false,
+      msg:'不是以0x55开头'
+    };
+  }
+  let data = [];//取第50个至249个
+  let offset = 1;
+  for(let i = 0 ;i < 249 ;i++){
+    let u16int = buf.readInt16BE(offset+i*2);
+    data.push(u16int);
+  }
+
+  let type = (buf[0] === 0x55)?'x':'y';
+  return {
+    type,
+    data
+  };
+}
+
+let result = getdata(bufx);
+console.log(`result==>${JSON.stringify(result)}`);
+result = getdata(bufy);
+console.log(`result==>${JSON.stringify(result)}`);
