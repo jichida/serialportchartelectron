@@ -40,10 +40,24 @@ const getdata = (buf)=>{
     };
   }
   let data = [];//取第50个至249个
-  let offset = 1;
-  for(let i = 0 ;i < 249 ;i++){
-    let u16int = buf.readInt16BE(offset+i*2);
-    data.push(u16int);
+  for(let i = 49 ;i < 249 ;i++){
+    let u1 = buf.readUInt8(1+i*2);
+    let u2 = buf.readUInt8(1+i*2+1);
+    let isminus = u1 >> 7;
+    // console.log(`u1:${u1},u2:${u2},isminus:${isminus}`);
+    let value;
+    if(isminus > 0){
+      u1 = u1 & 0x7F;
+      // console.log(`u1:${u1}`);
+      value = (u1 << 8) + u2;
+      value = -value;
+    }
+    else{
+      value = (u1 << 8) + u2;
+      // console.log(`value:${value}`);
+    }
+
+    data.push(value);
   }
 
   let type = (buf[0] === 0x55)?'x':'y';
@@ -53,7 +67,18 @@ const getdata = (buf)=>{
   };
 }
 
-let result = getdata(bufx);
-console.log(`result==>${JSON.stringify(result)}`);
-result = getdata(bufy);
-console.log(`result==>${JSON.stringify(result)}`);
+const datax = getdata(bufx);
+console.log(`result==>${JSON.stringify(datax)}`);
+const datay = getdata(bufy);
+console.log(`result==>${JSON.stringify(datay)}`);
+
+let mapvresult = [];
+let total = 0;
+_.map(datax.data,(v,index)=>{
+  total = total+datay.data[index];
+  mapvresult.push({
+    x:v,
+    y:total
+  });
+});
+console.log(`result==>${JSON.stringify(mapvresult)}`);

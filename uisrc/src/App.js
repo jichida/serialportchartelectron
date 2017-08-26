@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import './App.css';
 import "./css/antd.css";
+import ChartShow from './components/chartshow';
 
 const { Header, Sider, Content } = Layout;
 
@@ -44,7 +45,7 @@ class App extends Component {
             />
           </Header>
           <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
-            Content
+            <ChartShow />
           </Content>
         </Layout>
       </Layout>
