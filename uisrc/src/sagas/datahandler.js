@@ -25,10 +25,9 @@ let recvmessagetoresultpair = {
 
 //非验证发送接口
 let sendmessagefnsz = {
-  'getrealtimedata_request':`${getrealtimedata_request}`,
-  'querydata_request':`${querydata_request}`,
-  'keepalive_request':`${keepalive_request}`,
-
+  'getrealtimedata':`${getrealtimedata_request}`,
+  'querydata':`${querydata_request}`,
+  'keepalive':`${keepalive_request}`,
 };
 
 //验证发送接口
