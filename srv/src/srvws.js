@@ -2,7 +2,7 @@ let winston = require('./log/log.js');
 const config = require('./config.js');
 
 
-const handleuserapp = require('./handler/index.js');
+const handleserialport= require('./handler/index.js');
 
 let startwebsocketsrv = (http)=>{
   let io = require('socket.io')(http);
@@ -20,16 +20,7 @@ let startwebsocketsrv = (http)=>{
       }
       console.log('pc get message:' + JSON.stringify(payload));
       winston.getlog().info('ctx:', JSON.stringify(ctx));
-      handleuserpc(socket,payload,ctx);
-    });
-
-    socket.on('app',(payload)=>{
-      if(!ctx.usertype){
-        ctx.usertype = 'app';
-      }
-      console.log('app get message:' + JSON.stringify(payload));
-      winston.getlog().info('ctx:', JSON.stringify(ctx));
-      handleuserapp(socket,payload,ctx);
+      handleserialport(socket,payload,ctx);
     });
 
 

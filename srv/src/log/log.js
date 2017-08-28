@@ -6,13 +6,13 @@ exports.initLog =  ()=>{
   var filename = "bms_"+moment().format('YYYY-MM-DD-HHmmss');
 
   var logfile = filename+".log";
-  var logpath = path.resolve(__dirname,'../../../log', logfile);
+  var logpath = path.resolve(__dirname,'../../log', logfile);
 
   var logfileerr = filename+"_err.log";
-  var logpatherr = path.resolve(__dirname,'../../../log', logfileerr);
+  var logpatherr = path.resolve(__dirname,'../../log', logfileerr);
 
   var logfilewarn = filename+"_warn.log";
-  var logpathwarn = path.resolve(__dirname,'../../../log', logfilewarn);
+  var logpathwarn = path.resolve(__dirname,'../../log', logfilewarn);
 
   // winston.configure({
   //   transports: [

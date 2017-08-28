@@ -15,7 +15,7 @@ module.exports = (socket,actiondata,ctx)=>{
   console.log("app端获取数据--->" + JSON.stringify(actiondata));
   console.log("app端获取上下文--->" + JSON.stringify(ctx));
   try{
-      if(ctx.usertype !== 'app'){
+      if(ctx.usertype !== 'pc'){
         console.log("不是正确的客户端--->" + actiondata.cmd);
         socket.emit('common_err',{errmsg:'无效的app客户端'});
         return;
