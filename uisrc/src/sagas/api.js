@@ -1,2 +1,5 @@
-// module.exports = require('./api.ws.js');
-module.exports = require('./api.offline.js');
+if (process.env.NODE_ENV === 'production') {
+    module.exports = require('./api.prod');
+} else {
+    module.exports = require('./api.offline');
+}

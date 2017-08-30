@@ -16,7 +16,6 @@ export default class extends Component {
         chrome
         padding="12px"
       >
-        <TitleBar title="磁滞回线图形软件" controls/>
         <MainView />
       </Window>
     );
