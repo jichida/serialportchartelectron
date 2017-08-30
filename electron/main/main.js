@@ -1,5 +1,8 @@
 const electron = require('electron')
 const api = require('./api');
+const db = require('./db');
+const serialport = require('./serialport.js');
+
 global.api = api;
 // Module to control application life.
 const app = electron.app
@@ -9,6 +12,8 @@ const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const url = require('url')
 
+db.startdb();
+serialport.start();
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow

@@ -37,8 +37,9 @@ class ChartShow extends React.Component {
          <CartesianGrid strokeDasharray="3 3"/>
          <Tooltip/>
            <Legend />
-           <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 8}}/>
-           <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+           <Line type="monotone" dataKey="55" stroke="#8884d8" />
+           <Line type="monotone" dataKey="ee" stroke="#82ca9d" />
+           <Line type="monotone" dataKey="tee" stroke="#ff0000" />
         </LineChart>
         );
     }
