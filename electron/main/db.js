@@ -88,7 +88,7 @@ const parsedata = (hexdata)=>{
   _.map(datax.data,(v,index)=>{
     t55 = t55+datax.data[index];
     tee = tee+datay.data[index];
-    data.push( { 55:v, ee: datay.data[index],tee:tee,t55:t55, amt: index});
+    data.push( { 55:v, ee: datay.data[index], amt: index});
   });
   const payload = {
     rawdatahex:hexdata,
@@ -104,7 +104,7 @@ const parsedata = (hexdata)=>{
 //======插入数据库======
 exports.insertdb =(hexdata,callback)=>{
   const payload = parsedata(hexdata);
-  console.log(`获取到数据:${payload}`);
+  console.log(`获取到数据:${JSON.stringify(payload)}`);
   let dbModel = DBModels.SerialportchartModel;
   let entity = new dbModel(payload);
   entity.save((err,newdata)=>{

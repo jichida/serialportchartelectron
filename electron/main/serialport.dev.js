@@ -28,10 +28,11 @@ exports.start = ()=>{
 }
 
 exports.start_measure = (callback)=>{
-  ev.evEmitter.emit('write_buf');
-  ev.evEmitter.on('get_buf',(hexdata)=>{
+   ev.evEmitter.removeAllListeners(['get_buf']);
+   ev.evEmitter.on('get_buf',(hexdata)=>{
     db.insertdb(hexdata,(err,result)=>{
       callback(err,result);
     });
   });
+  ev.evEmitter.emit('write_buf');
 }

@@ -34,7 +34,7 @@ const openSerialWork = (portnumber)=>{
   });
 
   port.on('error', (err)=> {
-    ev.evEmitter.removeAllListeners(['write_buf','get_data']);
+    ev.evEmitter.removeAllListeners(['write_buf','get_buf']);
   });
 
 }
@@ -43,11 +43,13 @@ exports.start = ()=>{
   openSerialWork('COM3');
 }
 
+
 exports.start_measure = (callback)=>{
-  ev.evEmitter.emit('write_buf');
-  ev.evEmitter.on('get_buf',(hexdata)=>{
+   ev.evEmitter.removeAllListeners(['get_buf']);
+   ev.evEmitter.on('get_buf',(hexdata)=>{
     db.insertdb(hexdata,(err,result)=>{
       callback(err,result);
     });
   });
+  ev.evEmitter.emit('write_buf');
 }
