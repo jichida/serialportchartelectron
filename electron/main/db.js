@@ -112,6 +112,9 @@ exports.insertdb =(hexdata,callback)=>{
   });
 }
 
-exports.querydb =(query)=>{
-
+exports.querydb =(query,options,callback)=>{
+  let dbModel = DBModels.SerialportchartModel;
+  dbModel.paginate(query,options,(err,list)=>{
+    callback(err,list);
+  });
 }
