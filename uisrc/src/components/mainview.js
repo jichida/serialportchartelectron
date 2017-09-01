@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { NavPane, NavPaneItem, Text } from 'react-desktop/windows';
 import ChartShow from './chartshow';
-import { Button } from 'react-desktop/windows';
+import Historydata from './historydata';
+import { Button } from 'antd';
 import {
   getrealtimedata_request,
   querydata_request,
@@ -26,10 +27,11 @@ class MainPage extends Component {
             <NavPane 
                 openLength={200} 
                 push 
-                color={"#FFFFFF"} 
-                theme={this.props.theme}>
+                color={"#66ACDA"} 
+                theme={this.props.theme}
+                >
                 {this.renderItem1('工作台', <ChartShow />)}
-                {this.renderItem2('历史查询', '==历史查询控件==')}
+                {this.renderItem2('历史查询', <Historydata />)}
             </NavPane>
         );
     }
@@ -48,9 +50,27 @@ class MainPage extends Component {
                 push
                 >
                 <Text>{content}</Text>
-                <Button push color={this.props.color} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}}>
-                开始测量
-                </Button>
+                <div 
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                        alignItems: "center"
+                    }}
+                    >
+                    <span 
+                        style={{color : "#FFF", lineHeight : "30px", fontSize: "16px"}}
+                        >
+                        数据测量时间：2017-09-09 09:09:23
+                    </span>
+                    <Button 
+                        push
+                        onClick={() => {this.props.dispatch(getrealtimedata_request({}));}}
+                        >
+                        开始测量
+                    </Button>
+                </div>
+
             </NavPaneItem>
         );
     }

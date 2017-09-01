@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "antd": "^2.12.8",
     "electron": "^1.7.5",
     "lodash": "^4.17.4",
     "react": "^15.6.1",

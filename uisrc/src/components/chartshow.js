@@ -19,8 +19,9 @@ class ChartShow extends React.Component {
                     padding="20px"
                     horizontalAlignment="center"
                     verticalAlignment="center"
-                    width="200px"
-                    height="100px"
+                    width="100%"
+                    height="400px"
+                    background="rgba(255,255,255,.5)"
                     >
                     <Text color={'#333'}>暂无数据</Text>
                 </View>
@@ -28,8 +29,12 @@ class ChartShow extends React.Component {
         }
         return (
             <LineChart 
-                width={600} height={300} data={chartdata}
-                margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                width={window.innerWidth-240}
+                height={400}
+                data={chartdata}
+                margin={{top: 30, right: 30, left: 20, bottom: 20}}
+                style={{background: "#FFFFFF"}}
+                >
                 <XAxis dataKey="name"/>
                 <YAxis/>
                 <CartesianGrid strokeDasharray="3 3"/>

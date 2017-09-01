@@ -1,0 +1,27 @@
+.list{
+	margin: 20px 0;
+}
+.list ul.listdata{
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.list ul.listdata li{
+	height: 120px;
+	width: 32.6%;
+	background: #FFF;
+	margin-bottom: 10px;
+}
+.ant-pagination {
+	text-align: center;
+}
+.ant-pagination-jump-next, .ant-pagination-jump-prev, .ant-pagination-next, .ant-pagination-prev{
+	color: #FFF;
+}
+.ant-pagination-jump-next:after, .ant-pagination-jump-prev:after{
+	color: #FFF;
+}
+svg {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
