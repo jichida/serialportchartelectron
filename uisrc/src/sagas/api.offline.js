@@ -64,10 +64,8 @@ export function* apiflow(){//仅执行一次
   yield takeEvery(`${getrealtimedata_request}`, function*(action) {
     // const result = yield call(api_getrealtimedata_request);
     // const {payload} = result;
-    const payload = {
-      chartdata:sampledata.chartdata
-    }
-    yield put(getrealtimedata_result(payload));
+    const {line1,line2} = sampledata;
+    yield put(getrealtimedata_result({line1,line2} ));
 
   });
 

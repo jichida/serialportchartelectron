@@ -1,18 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
-import _ from 'lodash';
 import { View, Text } from 'react-desktop/windows';
+import ChartXY from './chartxy';
 
 class ChartShow extends React.Component {
-    componentWillMount() {
-    }
-    componentWillUnmount(){
-    }
-    componentDidMount() {
-    }
+
     render() {
-        const {isgetdata,chartdata} = this.props;
+        const {isgetdata,line1,line2} = this.props;
         const contentheight = window.innerHeight - 150;
         if(!isgetdata){
             return (
@@ -28,23 +22,10 @@ class ChartShow extends React.Component {
                 </View>
             );
         }
+        const height = contentheight;
+        const width = window.innerWidth-240;
         return (
-            <LineChart 
-                width={window.innerWidth-240}
-                height={contentheight}
-                data={chartdata}
-                margin={{top: 30, right: 30, left: 20, bottom: 20}}
-                style={{background: "#FFFFFF"}}
-                >
-                <XAxis dataKey="name"/>
-                <YAxis/>
-                <CartesianGrid strokeDasharray="3 3"/>
-                <Tooltip/>
-                <Legend />
-                <Line type="monotone" dataKey="55" stroke="#8884d8" />
-                <Line type="monotone" dataKey="ee" stroke="#82ca9d" />
-                <Line type="monotone" dataKey="tee" stroke="#ff0000" />
-            </LineChart>
+          <ChartXY height={height} width={width} line1={line1} line2={line2}/>
         );
     }
 }
