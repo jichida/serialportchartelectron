@@ -5,51 +5,48 @@ import _ from 'lodash';
 import { View, Text } from 'react-desktop/windows';
 
 class ChartShow extends React.Component {
-    componentWillMount () {
-
+    componentWillMount() {
     }
     componentWillUnmount(){
-
     }
-    componentDidMount () {
+    componentDidMount() {
     }
     render() {
         const {isgetdata,chartdata} = this.props;
         if(!isgetdata){
-            return (<View
-                 color='#cc7f29'
-                 background
-                 padding="20px"
-                 horizontalAlignment="center"
-                 verticalAlignment="center"
-                 width="200px"
-                 height="100px"
-               >
-                 <Text color={'#333'}>暂无数据</Text>
-               </View>
-             );
+            return (
+                <View
+                    padding="20px"
+                    horizontalAlignment="center"
+                    verticalAlignment="center"
+                    width="200px"
+                    height="100px"
+                    >
+                    <Text color={'#333'}>暂无数据</Text>
+                </View>
+            );
         }
         return (
-          <LineChart width={600} height={300} data={chartdata}
-          margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-         <XAxis dataKey="name"/>
-         <YAxis/>
-         <CartesianGrid strokeDasharray="3 3"/>
-         <Tooltip/>
-           <Legend />
-           <Line type="monotone" dataKey="55" stroke="#8884d8" />
-           <Line type="monotone" dataKey="ee" stroke="#82ca9d" />
-           <Line type="monotone" dataKey="tee" stroke="#ff0000" />
-        </LineChart>
+            <LineChart 
+                width={600} height={300} data={chartdata}
+                margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                <XAxis dataKey="name"/>
+                <YAxis/>
+                <CartesianGrid strokeDasharray="3 3"/>
+                <Tooltip/>
+                <Legend />
+                <Line type="monotone" dataKey="55" stroke="#8884d8" />
+                <Line type="monotone" dataKey="ee" stroke="#82ca9d" />
+                <Line type="monotone" dataKey="tee" stroke="#ff0000" />
+            </LineChart>
         );
     }
 }
 
 const mapStateToProps = ({serialportdata}) => {
-  const {isgetdata,currealtimedata} = serialportdata;
-  return {isgetdata,...currealtimedata};
+    const {isgetdata,currealtimedata} = serialportdata;
+    return {isgetdata,...currealtimedata};
 };
 
 export default connect(mapStateToProps)(ChartShow);
-
 // export default ChartShow;
