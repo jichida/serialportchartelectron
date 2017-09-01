@@ -11,7 +11,7 @@ let list = ["0","1","0","1","0","1","0","1","0"];
 
 class Historydata extends React.Component {
     render() {
-        
+        let liheight = (window.innerHeight-185)/3
         return (
             <div style={{width : "100%"}}>
                 <div style={{display:"flex"}}>
@@ -22,7 +22,7 @@ class Historydata extends React.Component {
                     <ul className="listdata">
                         {
                             _.map(list, (index, key)=>{
-                                return <li key={key}>{key}</li>
+                                return <li key={key} style={{height : liheight+"px"}}>{key}</li>
                             })
                         }
                     </ul>

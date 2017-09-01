@@ -13,6 +13,7 @@ class ChartShow extends React.Component {
     }
     render() {
         const {isgetdata,chartdata} = this.props;
+        const contentheight = window.innerHeight - 150;
         if(!isgetdata){
             return (
                 <View
@@ -20,7 +21,7 @@ class ChartShow extends React.Component {
                     horizontalAlignment="center"
                     verticalAlignment="center"
                     width="100%"
-                    height="400px"
+                    height={`${contentheight}px`}
                     background="rgba(255,255,255,.5)"
                     >
                     <Text color={'#333'}>暂无数据</Text>
@@ -30,7 +31,7 @@ class ChartShow extends React.Component {
         return (
             <LineChart 
                 width={window.innerWidth-240}
-                height={400}
+                height={contentheight}
                 data={chartdata}
                 margin={{top: 30, right: 30, left: 20, bottom: 20}}
                 style={{background: "#FFFFFF"}}
