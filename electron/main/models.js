@@ -7,8 +7,9 @@ mongoose.Promise = global.Promise;
 let SerialportchartSchema = new Schema({
   created_at:{ type: Date, default:new Date()},
   rawdatahex: String,
-  currealtimedata:{type: Schema.Types.Mixed},
-  chartdata:{type: Schema.Types.Mixed},
+  line1:[],
+  line2:[],
+  createtimestring:String,
 });
 
 SerialportchartSchema.plugin(mongoosePaginate);

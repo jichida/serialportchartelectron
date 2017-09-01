@@ -1,4 +1,4 @@
-const serialport = require('./serialport.dev.js');
+const serialport = require('./serialport.prod.js');
 exports.start =()=>{
   console.log(`初始化....`);
   serialport.start();

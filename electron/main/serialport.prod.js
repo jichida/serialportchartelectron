@@ -40,7 +40,7 @@ const openSerialWork = (portnumber)=>{
 }
 
 exports.start = ()=>{
-  openSerialWork('COM3');
+  openSerialWork('COM4');
 }
 
 

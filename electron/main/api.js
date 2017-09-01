@@ -8,7 +8,12 @@ exports.getrealtimedata= (callback)=>{
       console.log(`最终获取到数据===>${JSON.stringify(result)}`);
       callback({
         cmd:'getrealtimedata_result',
-        payload:{chartdata:result.chartdata}
+        payload:{
+          _id:result._id,
+          line1:result.line1,
+          line2:result.line2,
+          createtimestring:result.createtimestring
+        }
       });
   });
 }
@@ -23,7 +28,7 @@ exports.queryrealtimedata= (query,option,callback)=>{
       console.log(`最终获取到数据===>${JSON.stringify(result)}`);
       callback({
         cmd:'queryrealtimedata_result',
-        payload:{chartdata:result}
+        payload:result
       });
   });
 }
