@@ -13,6 +13,7 @@ import {
 } from '../actions';
 import _ from 'lodash';
 import {parsedata} from './parse.js';
+import moment from 'moment';
 //
 // const remote = window.require('electron').remote;
 // // alert(`react remote:${!!remote}`);
@@ -65,12 +66,32 @@ export function* apiflow(){//仅执行一次
     // const result = yield call(api_getrealtimedata_request);
     // const {payload} = result;
     const {line1,line2} = sampledata;
-    yield put(getrealtimedata_result({line1,line2} ));
+    yield put(getrealtimedata_result({line1,line2,createtimestring:moment().format("YYYY-MM-DD HH:mm:ss")} ));
 
   });
 
   yield takeEvery(`${querydata_request}`, function*(action) {
-
+    // const {page:current,limit:pageSize,total,docs,pages} = payload;
+    const {line1,line2} = sampledata;
+    const payload = {
+      page:1,
+      limit:10,
+      total:2,
+      pages:1,
+      docs:[
+        {
+          line1,
+          line2,
+          createtimestring:moment().format("YYYY-MM-DD HH:mm:ss")
+        }
+        ,{
+          line1,
+          line2,
+          createtimestring:moment().format("YYYY-MM-DD HH:mm:ss")
+        }
+      ]
+    }
+    yield put(querydata_result(payload));
   });
 
   yield takeEvery(`${keepalive_request}`, function*(action) {

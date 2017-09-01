@@ -54,6 +54,14 @@ class Historydata extends React.Component {
         const {total,defaultCurrent,current,pageSize,datalist} = this.props;
         let liheight = (window.innerHeight-185)/3;
         const liwidth =  (window.innerWidth-185)/3;
+        let itemsco = [];
+        _.map(datalist, (v, key)=>{
+            const {line1,line2,createtimestring} = v;
+            itemsco.push(<li key={key} style={{height : liheight+"px"}}>
+              <div>数据测量时间： {createtimestring} </div>
+              <ChartXY height={liheight} width={liwidth} line1={line1} line2={line2}/>
+            </li>);
+        });
         return (
             <div style={{width : "100%"}}>
                 <div style={{display:"flex"}}>
@@ -64,15 +72,7 @@ class Historydata extends React.Component {
                 </div>
                 <div className="list">
                     <ul className="listdata">
-                        {
-                            _.map(datalist, (v, key)=>{
-                                const {line1,line2} = v;
-                                return
-                                (<li key={key} style={{height : liheight+"px"}}>
-                                  <ChartXY height={liheight} width={liwidth} line1={line1} line2={line2}/>
-                                </li>)
-                            })
-                        }
+                        {itemsco}
                     </ul>
                     <Pagination defaultCurrent={defaultCurrent} pageSize={pageSize} current={current} total={total} onChange={this.onChange}/>
                 </div>

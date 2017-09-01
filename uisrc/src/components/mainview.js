@@ -37,6 +37,7 @@ class MainPage extends Component {
     }
 
     renderItem1(title, content) {
+        const {createtimestring} = this.props;
         return (
             <NavPaneItem
                 title={<span style={{color: "#FFF"}}>{title}</span>}
@@ -61,10 +62,10 @@ class MainPage extends Component {
                     <span
                         style={{color : "#FFF", lineHeight : "30px", fontSize: "16px"}}
                         >
-                        数据测量时间：2017-09-09 09:09:23
+                        数据测量时间： {createtimestring} 
                     </span>
                     <Button
-                        
+
                         onClick={() => {this.props.dispatch(getrealtimedata_request({}));}}
                         >
                         开始测量
@@ -114,5 +115,7 @@ class MainPage extends Component {
     }
 }
 
-// const mapStateToProps = () => {};
-export default connect()(MainPage);
+const mapStateToProps = ({serialportdata:{currealtimedata:{createtimestring}}}) => {
+    return {createtimestring};
+};
+export default connect(mapStateToProps)(MainPage);
