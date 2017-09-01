@@ -49,7 +49,10 @@ class MainPage extends Component {
          开始测量
        </Button>
        <Button push color={this.props.color} onClick={
-         () => {this.props.dispatch(querydata_request({}));}
+         () => {
+           //querydata_request:{query:{},options:{page:page,limit:pageSize}}
+           this.props.dispatch(querydata_request({query:{},options:{page:1,limit:10}}));
+         }
        }>
         查询
       </Button>
