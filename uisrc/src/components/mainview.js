@@ -3,7 +3,10 @@ import {connect} from 'react-redux';
 import { NavPane, NavPaneItem, Text } from 'react-desktop/windows';
 import ChartShow from './chartshow';
 import { Button } from 'react-desktop/windows';
-import {getrealtimedata_request} from '../actions';
+import {
+  getrealtimedata_request,
+  querydata_request,
+} from '../actions';
 
 class MainPage extends Component {
     static defaultProps = {
