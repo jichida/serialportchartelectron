@@ -23,7 +23,7 @@ class ChartShow extends React.Component {
             );
         }
         const height = contentheight;
-        const width = window.innerWidth-240;
+        const width = window.innerWidth-242;
         return (
           <ChartXY height={height} width={width} line1={line1} line2={line2}/>
         );
