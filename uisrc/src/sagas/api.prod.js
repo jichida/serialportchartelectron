@@ -13,24 +13,49 @@ import {
 } from '../actions';
 import _ from 'lodash';
 
-const remote = window.require('electron').remote;
-// alert(`react remote:${!!remote}`);
-const srvremote = remote.getGlobal('api');
+const {ipcRenderer} = window.require('electron');
 // alert(`react api:${!!srvremote}`);
 //监听标记事件
 const api_getrealtimedata_request = ()=>{
   return new Promise(resolve => {
-    srvremote.getrealtimedata((result)=>{
-      resolve(result);
-    })
+    ipcRenderer.once('getrealtimedata_result', (event, arg) => {
+      try{
+        if(typeof arg === 'string'){
+            arg = JSON.parse(arg);
+        }
+      }
+      catch(e){
+        console.log(e);
+      }
+      resolve(arg);
+    });
+    ipcRenderer.send('getrealtimedata', '');
+    // srvremote.getrealtimedata((result)=>{
+    //   resolve(result);
+    // })
   });
 }
 
 const api_queryrealtimedata_request =(query,option)=>{
   return new Promise(resolve => {
-    srvremote.queryrealtimedata(query,option,(result)=>{
-      resolve(result);
-    })
+    ipcRenderer.once('queryrealtimedata_result', (event, arg) => {
+      try{
+        if(typeof arg === 'string'){
+            arg = JSON.parse(arg);
+        }
+      }
+      catch(e){
+        console.log(e);
+      }
+      resolve(arg);
+    });
+    ipcRenderer.send('queryrealtimedata', JSON.stringify({query,option}));
+
+    // const remote = window.require('electron').remote;
+    // const srvremote = remote.getGlobal('api');
+    // srvremote.queryrealtimedata(query,option,(result)=>{
+    //   resolve(result);
+    // })
   });
 }
 
@@ -52,6 +77,7 @@ export function* apiflow(){//仅执行一次
       const {payload:{query,options}} = action;
       const result = yield call(api_queryrealtimedata_request,query,options);
       const {payload} = result;
+      // alert(JSON.stringify(payload));
       yield put(querydata_result(payload));
     }
     catch(e){

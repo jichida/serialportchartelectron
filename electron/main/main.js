@@ -3,7 +3,8 @@ const api = require('./api');
 const db = require('./db');
 const serialport = require('./serialport.js');
 
-global.api = api;
+api.start();
+// global.api = api;
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.

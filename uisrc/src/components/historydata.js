@@ -14,8 +14,6 @@ import {
 import "../antd.min.css";
 import "../historydata.css";
 
-let list = ["0","1","0","1","0","1","0","1","0"];
-
 class Historydata extends React.Component {
   constructor(props) {
       super(props);
