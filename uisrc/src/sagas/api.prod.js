@@ -26,7 +26,7 @@ const api_getrealtimedata_request = ()=>{
   });
 }
 
-const api_queryrealtimedata_request =(query,option,callback)=>{
+const api_queryrealtimedata_request =(query,option)=>{
   return new Promise(resolve => {
     srvremote.queryrealtimedata(query,option,(result)=>{
       resolve(result);
@@ -49,9 +49,9 @@ export function* apiflow(){//仅执行一次
 
   yield takeEvery(`${querydata_request}`, function*(action) {
     try{
-      const result = yield call(api_queryrealtimedata_request);
+      const {payload:{query,options}} = action;
+      const result = yield call(api_queryrealtimedata_request,query,options);
       const {payload} = result;
-     
       yield put(querydata_result(payload));
     }
     catch(e){

@@ -22,7 +22,7 @@ exports.startdb = ()=>{
 exports.insertdb =(hexdata,callback)=>{
   const payload = parse.parsedata(hexdata);
   payload.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
-  console.log(`获取到数据:${JSON.stringify(payload)}`);
+
   let dbModel = DBModels.SerialportchartModel;
   let entity = new dbModel(payload);
   entity.save((err,newdata)=>{
@@ -31,8 +31,17 @@ exports.insertdb =(hexdata,callback)=>{
 }
 
 exports.querydb =(query,options,callback)=>{
+  options = options || {};
+  options.select = {
+    line1:1,
+    line2:1,
+    createtimestring:1,
+    _id:1
+  };
   let dbModel = DBModels.SerialportchartModel;
   dbModel.paginate(query,options,(err,result)=>{
     callback(err,result);
+
+    console.log(`发送到数据结束:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
   });
 }
