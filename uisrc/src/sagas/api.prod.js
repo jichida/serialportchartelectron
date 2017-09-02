@@ -51,7 +51,7 @@ export function* apiflow(){//仅执行一次
     try{
       const result = yield call(api_queryrealtimedata_request);
       const {payload} = result;
-      alert(JSON.stringify(payload));
+     
       yield put(querydata_result(payload));
     }
     catch(e){
