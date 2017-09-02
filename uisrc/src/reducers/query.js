@@ -2,8 +2,9 @@ import { createReducer } from 'redux-act';
 import {
   querydata_request,
   querydata_result,
+  ui_changedate
 } from '../actions';
-
+import moment from 'moment';
 
 const initial = {
   query: {
@@ -11,7 +12,9 @@ const initial = {
     defaultCurrent:1,
     current:1,
     pageSize:10,
-    datalist:[]
+    datalist:[],
+    startDate:moment(),
+    endDate:moment(),
   },
 };
 
@@ -22,6 +25,10 @@ const querydata = createReducer({
     const datalist = {...docs};
     return {...state,total,current,pageSize,datalist};
   },
+  [ui_changedate]:(state,payload)=>{
+    const {startDate,endDate} = payload;
+    return {...state,startDate,endDate};
+  }
 }, initial.query);
 
 export default querydata;

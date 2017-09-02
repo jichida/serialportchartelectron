@@ -8,6 +8,7 @@ import moment from 'moment';
 import ChartXY from './chartxy';
 import {
   querydata_request,
+  ui_changedate,
 } from '../actions';
 
 import "../antd.min.css";
@@ -18,22 +19,15 @@ let list = ["0","1","0","1","0","1","0","1","0"];
 class Historydata extends React.Component {
   constructor(props) {
       super(props);
-      this.state = {
-        startDate:moment(),
-        endDate:moment(),
-      };
   }
   onChangeSelDate(startDate,endDate){
-    this.setState({
-      startDate,
-      endDate
-    });
+    this.props.dispatch(ui_changedate({startDate,endDate}));
   }
   onClickQuery=()=>{
 
     const options = {page:1,limit:10};
     const query = {
-      "createtimestring":{"$gte":this.state.startDate.format("YYYY-MM-DD HH:mm:ss"),"$lte":this.state.endDate.format("YYYY-MM-DD HH:mm:ss")}
+      "createtimestring":{"$gte":this.props.startDate.format("YYYY-MM-DD HH:mm:ss"),"$lte":this.props.endDate.format("YYYY-MM-DD HH:mm:ss")}
     };
 
     console.log(`查询条件:${JSON.stringify(query)}`);
@@ -42,7 +36,7 @@ class Historydata extends React.Component {
 
   onChange=(page,pageSize)=>{
     const query = {
-      "createtimestring":{"$gte":this.state.startDate.format("YYYY-MM-DD HH:mm:ss"),"$lte":this.state.endDate.format("YYYY-MM-DD HH:mm:ss")}
+      "createtimestring":{"$gte":this.props.startDate.format("YYYY-MM-DD HH:mm:ss"),"$lte":this.props.endDate.format("YYYY-MM-DD HH:mm:ss")}
     };
     const options = {page:page,limit:pageSize};
 
@@ -65,8 +59,8 @@ class Historydata extends React.Component {
         return (
             <div style={{width : "100%"}}>
                 <div style={{display:"flex"}}>
-                  <Seltime  startDate = {this.state.startDate}
-                    endDate = {this.state.endDate}
+                  <Seltime  startDate = {this.props.startDate}
+                    endDate = {this.props.endDate}
                    onChangeSelDate={this.onChangeSelDate.bind(this)}/>
                     <Button type="primary" icon="search" style={{marginLeft:"10px"}} onClick={this.onClickQuery}>查询</Button>
                 </div>

@@ -11,3 +11,5 @@ export const querydata_result = createAction('querydata_result');
 //保持心跳
 export const keepalive_request  = createAction('keepalive_request');
 export const keepalive_result  = createAction('keepalive_result');
+
+export const ui_changedate = createAction('ui_changedate');
