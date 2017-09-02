@@ -23,7 +23,7 @@ class Historydata extends React.Component {
   }
   onClickQuery=()=>{
 
-    const options = {page:1,limit:10};
+    const options = {page:1,limit:this.props.pageSize};
     const query = {
       "createtimestring":{"$gte":this.props.startDate.format("YYYY-MM-DD HH:mm:ss"),"$lte":this.props.endDate.format("YYYY-MM-DD HH:mm:ss")}
     };
@@ -57,7 +57,7 @@ class Historydata extends React.Component {
         return (
             <div style={{width : "100%"}}>
                 <div style={{display:"flex"}}>
-                    <Seltime  
+                    <Seltime
                         startDate = {this.props.startDate}
                         endDate = {this.props.endDate}
                         onChangeSelDate={this.onChangeSelDate.bind(this)}

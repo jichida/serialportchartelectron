@@ -11,7 +11,7 @@ const initial = {
     total:0,
     defaultCurrent:1,
     current:1,
-    pageSize:10,
+    pageSize:9,
     datalist:[],
     startDate:moment(),
     endDate:moment(),
