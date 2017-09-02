@@ -71,25 +71,26 @@ export function* apiflow(){//仅执行一次
   });
 
   yield takeEvery(`${querydata_request}`, function*(action) {
-    // const {page:current,limit:pageSize,total,docs,pages} = payload;
+    const {payload:{options}} = action;
+    console.log(`options:${JSON.stringify(options)}`);
+    // const options = {page:1,limit:10};
+    const {page:current,limit:pageSize} = options;
     const {line1,line2} = sampledata;
+    let docs_total = [];
+    for(let i = 0; i< 42; i++){
+      docs_total.push({
+          line1,
+          line2,
+          createtimestring:moment().format("YYYY-MM-DD HH:mm:ss")
+        });
+    }
+    let docs = _.sampleSize(docs_total,pageSize);
     const payload = {
-      page:1,
-      limit:10,
-      total:2,
-      pages:1,
-      docs:[
-        {
-          line1,
-          line2,
-          createtimestring:moment().format("YYYY-MM-DD HH:mm:ss")
-        }
-        ,{
-          line1,
-          line2,
-          createtimestring:moment().format("YYYY-MM-DD HH:mm:ss")
-        }
-      ]
+      page:current,
+      limit:pageSize,
+      total:docs_total.length,
+      pages:(docs_total.length/pageSize)+1,
+      docs
     }
     yield put(querydata_result(payload));
   });

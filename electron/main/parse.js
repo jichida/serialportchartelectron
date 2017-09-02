@@ -5,8 +5,8 @@ exports.parsedata = (hexdata)=>{
   //2404
   // const hex_x = _.trim(data_x);
   // const hex_y = _.trim(data_y);
-  console.log(`hex_x===>${bufstrx},\n:${bufstrx.length}`);
-  console.log(`hex_y===>${bufstry},\n:${bufstrx.length}`);
+  // console.log(`hex_x===>${bufstrx},\n:${bufstrx.length}`);
+  // console.log(`hex_y===>${bufstry},\n:${bufstrx.length}`);
   //---------����buf-------------
   const bufx = Buffer.from(bufstrx, 'hex');
   const bufy = Buffer.from(bufstry, 'hex');
@@ -88,6 +88,6 @@ exports.parsedata = (hexdata)=>{
     line1,
     line2
   };
-  console.log(`最终:line1:${line1.length},line2:${line2.length},${JSON.stringify(payload)}`)
+  console.log(`最终:line1:${line1.length},line2:${line2.length}`)
   return payload;
 }

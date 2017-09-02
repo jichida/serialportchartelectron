@@ -24,6 +24,7 @@
     "socket.io-client": "^2.0.3"
   },
   "scripts": {
+    "buildcp": "react-scripts build && cp -r build/. ../electron/render && rm -R build",
     "build": "react-scripts build",
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom",
