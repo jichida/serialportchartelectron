@@ -28,15 +28,17 @@ class ChartShow extends React.Component {
         const {height,width} = this.props;
 
         return (
-          <XYPlot   height={height}  width={width}
-            ticks = {{stroke: '#FF0000'}}
-            text={{stroke: '#FF0000', fill: '#6b6b76', fontWeight: 600}}
-            >
-            <XAxis top={height/2}/>
-            <YAxis left={width/2} />
-            <LineSeries data={line1} color="red"/>
-            <LineSeries data={line2} color="blue"/>
-          </XYPlot>
+            <XYPlot
+                height={height}
+                width={width}
+                background = "#FFF"
+                text={{stroke: '#FF0000', fill: '#6b6b76', fontWeight: 600}}
+                >
+                <XAxis top={height/2}/>
+                <YAxis left={width/2} />
+                <LineSeries data={line1} color="red"/>
+                <LineSeries data={line2} color="blue"/>
+            </XYPlot>
         );
     }
 }

@@ -1,10 +1,14 @@
 .list{
 	margin: 20px 0;
+	width: 100%;
+	overflow-x: hidden;
 }
 .list ul.listdata{
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
+	width: 100%;
+	overflow:hidden;
 }
 .list ul.listdata li{
 	width: 32.6%;
@@ -23,4 +27,7 @@
 svg {
     -webkit-box-sizing: content-box;
     box-sizing: content-box;
+}
+.rv-xy-plot {
+	background: #FFF;
 }

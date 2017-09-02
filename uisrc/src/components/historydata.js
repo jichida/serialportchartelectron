@@ -45,25 +45,27 @@ class Historydata extends React.Component {
   render() {
         const {total,defaultCurrent,current,pageSize,datalist} = this.props;
         let liheight = (window.innerHeight-185)/3;
-        const liwidth =  (window.innerWidth-185)/3;
+        const liwidth =  (window.innerWidth-270)/3;
         let itemsco = [];
         _.map(datalist, (v, key)=>{
             const {line1,line2,createtimestring} = v;
-            itemsco.push(<li key={key} style={{height : liheight+"px"}}>
-              <div>数据测量时间： {createtimestring} </div>
-              <ChartXY height={liheight} width={liwidth} line1={line1} line2={line2}/>
+            itemsco.push(<li key={key} style={{height : liheight+"px", width : liwidth+"px", overflow : "hidden"}}>
+                <div style={{paddingLeft: "10px"}}>测量时间： {createtimestring} </div>
+                <ChartXY height={liheight} width={liwidth} line1={line1} line2={line2}/>
             </li>);
         });
         return (
             <div style={{width : "100%"}}>
                 <div style={{display:"flex"}}>
-                  <Seltime  startDate = {this.props.startDate}
-                    endDate = {this.props.endDate}
-                   onChangeSelDate={this.onChangeSelDate.bind(this)}/>
+                    <Seltime  
+                        startDate = {this.props.startDate}
+                        endDate = {this.props.endDate}
+                        onChangeSelDate={this.onChangeSelDate.bind(this)}
+                        />
                     <Button type="primary" icon="search" style={{marginLeft:"10px"}} onClick={this.onClickQuery}>查询</Button>
                 </div>
                 <div className="list">
-                    <ul className="listdata">
+                    <ul className="listdata" style={{width: (window.innerWidth-250)+"px"}}>
                         {itemsco}
                     </ul>
                     <Pagination defaultCurrent={defaultCurrent} pageSize={pageSize} current={current} total={total} onChange={this.onChange}/>
