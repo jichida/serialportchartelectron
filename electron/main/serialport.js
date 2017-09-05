@@ -1,9 +1,9 @@
 const serialport = require('./serialport.prod.js');
 exports.start =()=>{
-  console.log(`初始化....`);
+  console.log(`init....`);
   serialport.start();
 }
 exports.start_measure = (callback)=>{
-  console.log(`开始测量....`);
+  console.log(`start_measure....`);
   serialport.start_measure(callback);
 }
