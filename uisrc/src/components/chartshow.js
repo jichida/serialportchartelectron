@@ -8,24 +8,26 @@ class ChartShow extends React.Component {
     render() {
         const {isgetdata,line1,line2} = this.props;
         const contentheight = window.innerHeight - 150;
+        const height = contentheight*0.6;
+        const width = (window.innerWidth-242)*0.8;
         if(!isgetdata){
             return (
                 <View
                     padding="20px"
                     horizontalAlignment="center"
                     verticalAlignment="center"
-                    width="100%"
-                    height={`${contentheight}px`}
+                    width={`${width}px`}
+                    height={`${height}px`}
                     background="rgba(255,255,255,.5)"
+                    style={{margin:"auto"}}
                     >
                     <Text color={'#333'}>暂无数据</Text>
                 </View>
             );
         }
-        const height = contentheight;
-        const width = window.innerWidth-242;
+        
         return (
-          <ChartXY height={height} width={width} line1={line1} line2={line2}/>
+            <ChartXY height={height} width={width} line1={line1} line2={line2} />
         );
     }
 }

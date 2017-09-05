@@ -30,4 +30,34 @@ svg {
 }
 .rv-xy-plot {
 	background: #FFF;
+	margin: auto;
 }
+.mainchart2content{
+	display: flex;
+	justify-content: space-between;
+}
+.mainchart2content .btnlist{
+	display: flex;
+	flex-direction:  column;
+}
+.mainchart2content .btnlist button{
+	margin-bottom: 10px;
+}
+.mainchart2content .chart2{
+	background: #FFF;
+	align-self: stretch;
+	width: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

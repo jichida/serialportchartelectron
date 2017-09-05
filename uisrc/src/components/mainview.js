@@ -59,17 +59,28 @@ class MainPage extends Component {
                         alignItems: "center"
                     }}
                     >
-                    <span
-                        style={{color : "#FFF", lineHeight : "30px", fontSize: "16px"}}
-                        >
+                    <span style={{color : "#FFF", lineHeight : "30px", fontSize: "16px"}}>
                         数据测量时间： {createtimestring} 
                     </span>
-                    <Button
-
-                        onClick={() => {this.props.dispatch(getrealtimedata_request({}));}}
-                        >
-                        开始测量
-                    </Button>
+                    <div style={{width: "100%",paddingTop:"10px"}} className="mainchart2content">
+                        <div style={{width: "50%"}} className="btnlist">
+                            <Button style={{width: "80%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}} >
+                                开始测量
+                            </Button>
+                            <Button style={{width: "80%"}}>
+                                清空图表
+                            </Button>
+                            <Button style={{width: "80%"}}>
+                                打开串口
+                            </Button>
+                            <Button style={{width: "80%"}}>
+                                关闭串口
+                            </Button>
+                        </div>
+                        <div className="chart2" style={{height : ((window.innerHeight - 150)*.4)+"px"}}>
+                            这里是另外一张图表
+                        </div>
+                    </div>
                 </div>
 
             </NavPaneItem>
