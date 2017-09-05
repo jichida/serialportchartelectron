@@ -6,9 +6,9 @@ mongoose.Promise = global.Promise;
 //系统设置
 let SerialportchartSchema = new Schema({
   created_at:{ type: Date, default:new Date()},
-  rawdatahex: String,
-  line1:[],
-  line2:[],
+  rawdata_hex: String,
+  rawdata_55:[],
+  rawdata_ee:[],
   createtimestring:String,
 });
 

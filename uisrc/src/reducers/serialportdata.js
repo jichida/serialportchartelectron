@@ -6,8 +6,7 @@ import {
 
 const initial = {
   serialportdata: {
-    isgetdata:false,
-    currealtimedata:{},
+    currealtimedatalist:[],
   },
 };
 
@@ -15,7 +14,9 @@ const initial = {
 const serialportdata = createReducer({
   [getrealtimedata_result]:(state,payload)=>{
     const currealtimedata = {...payload};
-    return {...state,currealtimedata,isgetdata:true};
+    const currealtimedatalist = [...state.currealtimedatalist];
+    currealtimedatalist.push(currealtimedata);
+    return {...state,currealtimedatalist};
   },
 }, initial.serialportdata);
 

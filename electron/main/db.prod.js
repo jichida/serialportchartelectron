@@ -33,15 +33,14 @@ exports.insertdb =(hexdata,callback)=>{
 exports.querydb =(query,options,callback)=>{
   options = options || {};
   options.select = {
-    line1:1,
-    line2:1,
+    rawdata_55:1,
+    rawdata_ee:1,
     createtimestring:1,
     _id:1
   };
   let dbModel = DBModels.SerialportchartModel;
   dbModel.paginate(query,options,(err,result)=>{
     callback(err,result);
-
     console.log(`发送到数据结束:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
   });
 }

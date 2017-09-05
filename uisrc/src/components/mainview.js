@@ -8,6 +8,7 @@ import {
   getrealtimedata_request,
   querydata_request,
 } from '../actions';
+import _ from 'lodash';
 
 class MainPage extends Component {
     static defaultProps = {
@@ -60,7 +61,7 @@ class MainPage extends Component {
                     }}
                     >
                     <span style={{color : "#FFF", lineHeight : "30px", fontSize: "16px"}}>
-                        数据测量时间： {createtimestring} 
+                        数据测量时间： {createtimestring}
                     </span>
                     <div style={{width: "100%",paddingTop:"10px"}} className="mainchart2content">
                         <div style={{width: "50%"}} className="btnlist">
@@ -126,7 +127,12 @@ class MainPage extends Component {
     }
 }
 
-const mapStateToProps = ({serialportdata:{currealtimedata:{createtimestring}}}) => {
+const mapStateToProps = ({serialportdata}) => {
+    const {currealtimedatalist} = serialportdata;
+    let createtimestring = '';
+    if(currealtimedatalist.length > 0){
+      createtimestring = _.last(currealtimedatalist).createtimestring;
+    }
     return {createtimestring};
 };
 export default connect(mapStateToProps)(MainPage);

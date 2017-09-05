@@ -9,22 +9,22 @@ import { View, Text } from 'react-desktop/windows';
 class ChartShow extends React.Component {
 
     render() {
-        const {line1,line2} = this.props;
-        const line1_x_max = _.maxBy(line1,'x');
-        const line1_x_min = _.maxBy(line1,'x');
-        const line2_x_max = _.maxBy(line2,'x');
-        const line2_x_min = _.maxBy(line2,'x');
-
-        const line1_y_max = _.maxBy(line1,'y');
-        const line1_y_min = _.maxBy(line1,'y');
-        const line2_y_max = _.maxBy(line2,'y');
-        const line2_y_min = _.maxBy(line2,'y');
-
-        const x_max = _.max(line1_x_max,line2_x_max);
-        const x_min = _.min(line1_x_min,line2_x_min);
-        const y_max = _.max(line1_y_max,line2_y_max);
-        const y_min = _.min(line1_y_min,line2_y_min);
-
+        // const {line1,line2} = this.props;
+        // const line1_x_max = _.maxBy(line1,'x');
+        // const line1_x_min = _.maxBy(line1,'x');
+        // const line2_x_max = _.maxBy(line2,'x');
+        // const line2_x_min = _.maxBy(line2,'x');
+        //
+        // const line1_y_max = _.maxBy(line1,'y');
+        // const line1_y_min = _.maxBy(line1,'y');
+        // const line2_y_max = _.maxBy(line2,'y');
+        // const line2_y_min = _.maxBy(line2,'y');
+        //
+        // const x_max = _.max(line1_x_max,line2_x_max);
+        // const x_min = _.min(line1_x_min,line2_x_min);
+        // const y_max = _.max(line1_y_max,line2_y_max);
+        // const y_min = _.min(line1_y_min,line2_y_min);
+        const {lines} = this.props;
         const {height,width} = this.props;
 
         return (
@@ -36,8 +36,11 @@ class ChartShow extends React.Component {
                 >
                 <XAxis top={height/2}/>
                 <YAxis left={width/2} />
-                <LineSeries data={line1} color="red"/>
-                <LineSeries data={line2} color="blue"/>
+                {
+                  _.map(lines,(lineobj,index)=>{
+                    return  <LineSeries data={lineobj.data} color={lineobj.color} key={index}/>
+                  })
+                }
             </XYPlot>
         );
     }

@@ -27,7 +27,7 @@ import moment from 'moment';
 //     })
 //   });
 // }
-const sampledata = parsedata(`5500008064809880c480f681238151817e81a881dc82048237825f828c82b582d\
+let sampledata = parsedata(`5500008064809880c480f681238151817e81a881dc82048237825f828c82b582d\
 e8306832d83538375839883bb83df8402842a84508474849984b784d084e985018519852c853f854\
 e856285728586859885a885bc85cb85db85e885f785fc86038607860e860d860f86148615861a861\
 8861a86198617861a86178616860685e985c885ab858f856d854b8525850184d584ac8488845e843\
@@ -65,8 +65,9 @@ export function* apiflow(){//仅执行一次
   yield takeEvery(`${getrealtimedata_request}`, function*(action) {
     // const result = yield call(api_getrealtimedata_request);
     // const {payload} = result;
-    const {line1,line2} = sampledata;
-    yield put(getrealtimedata_result({line1,line2,createtimestring:moment().format("YYYY-MM-DD HH:mm:ss")} ));
+    // const {line1,line2} = sampledata;
+    sampledata.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
+    yield put(getrealtimedata_result(sampledata));
 
   });
 

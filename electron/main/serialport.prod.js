@@ -3,8 +3,9 @@ const ev = require('./ev.js');
 const db = require('./db.js');
 // 计算机与测量仪表串口连接，波特率115200,8位数据，1位开始位，1位停止位，无校验位。
 const hex_data_len = 2404;
+let port;
 const openSerialWork = (portnumber)=>{
-  const port = new SerialPort(portnumber, {
+  port = new SerialPort(portnumber, {
     autoOpen: true,
     baudRate:115200,
     dataBits:8,
@@ -19,7 +20,7 @@ const openSerialWork = (portnumber)=>{
   let hexdata = '';
   port.on('data', (data)=> {
     hexdata += data.toString('hex');
-	console.log(`readfrom serialport:${hexdata}`);
+	  console.log(`readfrom serialport:${hexdata}`);
     if(hexdata.length >= hex_data_len){
       console.log(`get one data!`);
       ev.evEmitter.emit('get_buf',hexdata);
@@ -51,6 +52,7 @@ exports.start = ()=>{
 
 
 exports.start_measure = (callback)=>{
+  hexdata = '';
    ev.evEmitter.removeAllListeners(['get_buf']);
    ev.evEmitter.on('get_buf',(hexdata)=>{
     db.insertdb(hexdata,(err,result)=>{
