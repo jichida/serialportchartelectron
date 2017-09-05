@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import 'react-vis/dist/style.css';
-import {XYPlot, LineSeries,VerticalGridLines,HorizontalGridLines,XAxis,YAxis} from 'react-vis';
+import {XYPlot, LineSeries,LabelSeries,XAxis,YAxis} from 'react-vis';
 
 import _ from 'lodash';
 import { View, Text } from 'react-desktop/windows';
@@ -9,23 +9,9 @@ import { View, Text } from 'react-desktop/windows';
 class ChartShow extends React.Component {
 
     render() {
-        // const {line1,line2} = this.props;
-        // const line1_x_max = _.maxBy(line1,'x');
-        // const line1_x_min = _.maxBy(line1,'x');
-        // const line2_x_max = _.maxBy(line2,'x');
-        // const line2_x_min = _.maxBy(line2,'x');
-        //
-        // const line1_y_max = _.maxBy(line1,'y');
-        // const line1_y_min = _.maxBy(line1,'y');
-        // const line2_y_max = _.maxBy(line2,'y');
-        // const line2_y_min = _.maxBy(line2,'y');
-        //
-        // const x_max = _.max(line1_x_max,line2_x_max);
-        // const x_min = _.min(line1_x_min,line2_x_min);
-        // const y_max = _.max(line1_y_max,line2_y_max);
-        // const y_min = _.min(line1_y_min,line2_y_min);
-        const {lines} = this.props;
+        let {lines,labels_data} = this.props;
         const {height,width} = this.props;
+        lines = lines || [];
 
         return (
             <XYPlot
@@ -40,6 +26,9 @@ class ChartShow extends React.Component {
                   _.map(lines,(lineobj,index)=>{
                     return  <LineSeries data={lineobj.data} color={lineobj.color} key={index}/>
                   })
+                }
+                {
+                 labels_data && <LabelSeries data={labels_data}/>
                 }
             </XYPlot>
         );

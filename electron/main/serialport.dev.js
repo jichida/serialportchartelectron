@@ -2,9 +2,12 @@ const ev = require('./ev.js');
 const db = require('./db.js');
 const _ = require('lodash');
 
-
-exports.start = ()=>{
+let portopened = false;
+exports.setopen = (open,callback)=>{
   // openSerialWork('COM3');
+  portopened = open;
+  callback(null,open);
+  
   ev.evEmitter.on('write_buf',()=>{
     console.log(`获取消息write_buf`);
 

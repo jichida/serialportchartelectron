@@ -13,3 +13,9 @@ export const keepalive_request  = createAction('keepalive_request');
 export const keepalive_result  = createAction('keepalive_result');
 
 export const ui_changedate = createAction('ui_changedate');
+
+
+export const ui_clearchart = createAction('ui_clearchart');
+
+export const serialport_request = createAction('serialport_request');
+export const serialport_result = createAction('serialport_result');

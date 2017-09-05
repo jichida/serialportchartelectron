@@ -38,7 +38,25 @@ exports.start = ()=>{
           payload:result
         }));
     });
-  })
+  });
+
+  ipcMain.on('serialport', (event, arg) => {
+    try{
+      if(typeof arg === 'string'){
+          arg = JSON.parse(arg);
+      }
+    }
+    catch(e){
+      console.log(e);
+    }
+    let {open} = arg;
+    serialport.setopen(open,(err,result)=>{
+      event.sender.send('serialport_result', JSON.stringify({
+        payload:result
+      }));
+    });
+  });
+
 }
 
 //

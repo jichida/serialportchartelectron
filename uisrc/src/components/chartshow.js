@@ -27,23 +27,44 @@ class ChartShow extends React.Component {
             );
         }
         let lines = [];
+        let labels_data = [];
         _.map(currealtimedatalist,(currealtimedata)=>{
           const {rawdata_55,rawdata_ee} = currealtimedata;
           const data_55 = _.slice(rawdata_55,50,250);
           const data_ee = _.slice(rawdata_ee,50,250);
           let tee = 0;
           let linedata = [];
+
           _.map(data_55,(v,index)=>{
             tee = tee + data_ee[index];
             linedata.push({x:v,y:tee});
           });
+          const line_y_max = _.maxBy(linedata,'y');
+          const line_y_min = _.minBy(linedata,'y');
+          _.map(linedata,(lineobj,index)=>{
+            if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
+              labels_data.push({
+                x:lineobj.x,
+                y:lineobj.y,
+                label: `${lineobj.x},${lineobj.y}`
+              });
+            }
+            if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
+              labels_data.push({
+                x:lineobj.x,
+                y:lineobj.y,
+                label: `${lineobj.x},${lineobj.y}`
+              });
+            }
+          })
           lines.push({
             data:linedata,
             color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
           });
         });
+        console.log(`lines:${JSON.stringify(lines)}`);
         return (
-            <ChartXY height={height} width={width} lines={lines} />
+            <ChartXY height={height} width={width} lines={lines} labels_data={labels_data}/>
         );
     }
 }

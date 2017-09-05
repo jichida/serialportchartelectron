@@ -7,8 +7,8 @@ import {
   querydata_request,
   querydata_result,
 
-  keepalive_request,
-  keepalive_result,
+  serialport_request,
+  serialport_result
 
 } from '../actions';
 import _ from 'lodash';
@@ -96,7 +96,14 @@ export function* apiflow(){//仅执行一次
     yield put(querydata_result(payload));
   });
 
-  yield takeEvery(`${keepalive_request}`, function*(action) {
+  yield takeEvery(`${serialport_request}`, function*(action) {
+    try{
+      const {payload:{open}} = action;
+      yield put(serialport_result(open));
+    }
+    catch(e){
+      console.log(e);
+    }
 
   });
 

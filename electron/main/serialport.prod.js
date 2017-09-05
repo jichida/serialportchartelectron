@@ -4,7 +4,8 @@ const db = require('./db.js');
 // 计算机与测量仪表串口连接，波特率115200,8位数据，1位开始位，1位停止位，无校验位。
 const hex_data_len = 2404;
 let port;
-const openSerialWork = (portnumber)=>{
+let portopened = false;
+const openSerialWork = (portnumber,callback)=>{
   port = new SerialPort(portnumber, {
     autoOpen: true,
     baudRate:115200,
@@ -29,26 +30,37 @@ const openSerialWork = (portnumber)=>{
   });
 
   port.on('open', ()=> {
-	console.log(`open port success!`);
+    portopened = true;
+	  console.log(`open port success!`);
     ev.evEmitter.on('write_buf',()=>{
 	  console.log(`start write to serialport!`)
       const cmdbuf = Buffer.from('AA33','hex');
       port.write(cmdbuf);
     });
+    callback(null,true);
   });
 
   port.on('error', (err)=> {
-	console.log(`serial port error!`)
-    ev.evEmitter.removeAllListeners(['write_buf','get_buf']);
+	   console.log(`serial port error!`)
+     ev.evEmitter.removeAllListeners(['write_buf','get_buf']);
+     portopened = false;
+     callback(null,false);
   });
 
+  port.on('close', ()=> {
+	   console.log(`serial port close!`)
+     ev.evEmitter.removeAllListeners(['write_buf','get_buf']);
+     portopened = false;
+  });
 }
 
-exports.start = ()=>{
-  const serialport = process.env.SERIAL_PORT || 'COM4';
-  console.log(`open serialport:${serialport}`);
-  openSerialWork(serialport);
-}
+// exports.start = ()=>{
+//   const serialport = process.env.SERIAL_PORT || 'COM4';
+//   console.log(`open serialport:${serialport}`);
+//   openSerialWork(serialport,(err,result)=>{
+//
+//   });
+// }
 
 
 exports.start_measure = (callback)=>{
@@ -60,4 +72,26 @@ exports.start_measure = (callback)=>{
     });
   });
   ev.evEmitter.emit('write_buf');
+}
+
+exports.setopen =(open,callback)=>{
+  if(open){
+    if(portopened){
+      callback(null,true);
+      return;
+    }
+    const serialport = process.env.SERIAL_PORT || 'COM4';
+    console.log(`open serialport:${serialport}`);
+    openSerialWork(serialport,callback);
+  }
+  else{
+    if(!portopened){
+      callback(null,false);
+      return;
+    }
+    port.close(()=>{
+      callback(null,false);
+    });
+  }
+
 }

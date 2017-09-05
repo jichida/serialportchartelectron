@@ -7,6 +7,8 @@ import { Button } from 'antd';
 import {
   getrealtimedata_request,
   querydata_request,
+  ui_clearchart,
+  serialport_request,
 } from '../actions';
 import _ from 'lodash';
 import ChartXY from './chartxy';
@@ -39,7 +41,7 @@ class MainPage extends Component {
     }
 
     renderItem1(title, content) {
-        const {createtimestring,currealtimedatalist} = this.props;
+        const {createtimestring,currealtimedatalist,isserialportopen} = this.props;
         let lines = [];
         _.map(currealtimedatalist,(currealtimedata)=>{
           const {rawdata_55,rawdata_ee} = currealtimedata;
@@ -92,15 +94,16 @@ class MainPage extends Component {
                             <Button style={{width: "80%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}} >
                                 开始测量
                             </Button>
-                            <Button style={{width: "80%"}}>
+                            <Button style={{width: "80%"}} onClick={() => {this.props.dispatch(ui_clearchart({}));}} >
                                 清空图表
                             </Button>
-                            <Button style={{width: "80%"}}>
+                            <Button style={{width: "80%"}} onClick={() => {this.props.dispatch(serialport_request({open:true}));}} >
                                 打开串口
                             </Button>
-                            <Button style={{width: "80%"}}>
+                            <Button style={{width: "80%"}} onClick={() => {this.props.dispatch(serialport_request({open:false}));}} >
                                 关闭串口
                             </Button>
+                            <Text>{isserialportopen?'串口打开':'串口关闭'}</Text>
                         </div>
                         <div className="chart2" style={{height : ((window.innerHeight - 150)*.4)+"px"}}>
                             <ChartXY height={ ((window.innerHeight - 150)*.4)} width={ ((window.innerHeight - 150)*.4)} lines={lines} />
@@ -152,11 +155,11 @@ class MainPage extends Component {
 }
 
 const mapStateToProps = ({serialportdata}) => {
-    const {currealtimedatalist} = serialportdata;
+    const {currealtimedatalist,isserialportopen} = serialportdata;
     let createtimestring = '';
     if(currealtimedatalist.length > 0){
       createtimestring = _.last(currealtimedatalist).createtimestring;
     }
-    return {createtimestring,currealtimedatalist};
+    return {createtimestring,currealtimedatalist,isserialportopen};
 };
 export default connect(mapStateToProps)(MainPage);
