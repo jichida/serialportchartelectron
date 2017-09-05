@@ -19,22 +19,25 @@ const openSerialWork = (portnumber)=>{
   let hexdata = '';
   port.on('data', (data)=> {
     hexdata += data.toString('hex');
-
+	console.log(`readfrom serialport:${hexdata}`);
     if(hexdata.length >= hex_data_len){
-      console.log(`getdata:${hexdata}`);
+      console.log(`get one data!`);
       ev.evEmitter.emit('get_buf',hexdata);
       hexdata = '';//清空
     }
   });
 
   port.on('open', ()=> {
+	console.log(`open port success!`);
     ev.evEmitter.on('write_buf',()=>{
+	  console.log(`start write to serialport!`)
       const cmdbuf = Buffer.from('AA33','hex');
       port.write(cmdbuf);
     });
   });
 
   port.on('error', (err)=> {
+	console.log(`serial port error!`)
     ev.evEmitter.removeAllListeners(['write_buf','get_buf']);
   });
 
