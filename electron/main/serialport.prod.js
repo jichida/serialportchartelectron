@@ -41,7 +41,9 @@ const openSerialWork = (portnumber)=>{
 }
 
 exports.start = ()=>{
-  openSerialWork('COM4');
+  const serialport = process.env.SERIAL_PORT || 'COM4';
+  console.log(`open serialport:${serialport}`);
+  openSerialWork(serialport);
 }
 
 

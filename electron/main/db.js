@@ -1,13 +1,14 @@
-const db = require('./db.dev.js');
+const usedb = process.env.USE_DB;
+const db = usedb==='true'?require('./db.prod.js'):require('./db.dev.js');
 exports.startdb =()=>{
-  console.log(`startdb....`);
+  console.log(`[usedb:${usedb}]startdb....`);
   db.startdb();
 }
 exports.insertdb = (hexdata,callback)=>{
-  console.log(`insertdb....`);
+  console.log(`[usedb:${usedb}]insertdb....`);
   db.insertdb(hexdata,callback);
 }
 exports.querydb = (query,options,callback)=>{
-  console.log(`querydb....`);
+  console.log(`[usedb:${usedb}]querydb....`);
   db.querydb(query,options,callback);
 }
