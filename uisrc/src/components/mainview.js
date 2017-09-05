@@ -9,6 +9,7 @@ import {
   querydata_request,
 } from '../actions';
 import _ from 'lodash';
+import ChartXY from './chartxy';
 
 class MainPage extends Component {
     static defaultProps = {
@@ -38,7 +39,30 @@ class MainPage extends Component {
     }
 
     renderItem1(title, content) {
-        const {createtimestring} = this.props;
+        const {createtimestring,currealtimedatalist} = this.props;
+        let lines = [];
+        _.map(currealtimedatalist,(currealtimedata)=>{
+          const {rawdata_55,rawdata_ee} = currealtimedata;
+          const data_55 = _.slice(rawdata_55,50,250);
+          const data_ee = _.slice(rawdata_ee,50,250);
+          let data55 = [];
+          let dataee = [];
+          _.map(data_55,(v,index)=>{
+            data55.push({x:index,y:v});
+          });
+          _.map(data_ee,(v,index)=>{
+            dataee.push({x:index,y:v});
+          });
+          lines.push({
+            data:data55,
+            color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+          });
+          lines.push({
+            data:dataee,
+            color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+          });
+        });
+
         return (
             <NavPaneItem
                 title={<span style={{color: "#FFF"}}>{title}</span>}
@@ -79,7 +103,7 @@ class MainPage extends Component {
                             </Button>
                         </div>
                         <div className="chart2" style={{height : ((window.innerHeight - 150)*.4)+"px"}}>
-                            这里是另外一张图表
+                            <ChartXY height={ ((window.innerHeight - 150)*.4)} width={ ((window.innerHeight - 150)*.4)} lines={lines} />
                         </div>
                     </div>
                 </div>
@@ -133,6 +157,6 @@ const mapStateToProps = ({serialportdata}) => {
     if(currealtimedatalist.length > 0){
       createtimestring = _.last(currealtimedatalist).createtimestring;
     }
-    return {createtimestring};
+    return {createtimestring,currealtimedatalist};
 };
 export default connect(mapStateToProps)(MainPage);

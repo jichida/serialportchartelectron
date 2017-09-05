@@ -10,8 +10,8 @@ exports.start = ()=>{
         event.sender.send('getrealtimedata_result', JSON.stringify({
             payload:{
               _id:result._id,
-              line1:result.line1,
-              line2:result.line2,
+              rawdata_55:result.rawdata_55,
+              rawdata_ee:result.rawdata_ee,
               createtimestring:result.createtimestring
             }
         })
