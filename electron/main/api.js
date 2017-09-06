@@ -109,7 +109,7 @@ exports.start = ()=>{
         db.insertdb_verifydata(arg,(err,result)=>{
           console.log(`verifydatasave===>${JSON.stringify(result)}`);
           event.sender.send('verifydatasave_result', JSON.stringify({
-            result
+            payload:result
           }));
         });
       });
@@ -127,7 +127,7 @@ exports.start = ()=>{
         db.querydb_verifydata(arg,(err,result)=>{
           console.log(`queryverifydata===>${JSON.stringify(result)}`);
           event.sender.send('queryverifydata_result', JSON.stringify({
-            result
+            payload:result
           }));
         });
       });
