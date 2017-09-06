@@ -14,7 +14,7 @@ import {
   verifydata_result,
 
   verifydatasave_request,
-  verifydatasave_result
+  verifydatasave_result,
 
   queryverifydata_request,
   queryverifydata_result
