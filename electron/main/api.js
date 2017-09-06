@@ -1,12 +1,15 @@
 const _ = require('lodash');
 const serialport = require('./serialport.js');
 const db = require('./db');
+const parse = require('./parse.js');
 const {ipcMain} = require('electron');
+const moment = require('moment');
 
 exports.start = ()=>{
   ipcMain.on('getrealtimedata', (event, arg) => {
+    console.log(`getrealtimedata`);
     serialport.start_measure((err,result)=>{
-        console.log(`最终获取到数据===>${JSON.stringify(result)}`);
+        console.log(`getrealtimedata===>${JSON.stringify(result)}`);
         event.sender.send('getrealtimedata_result', JSON.stringify({
             payload:{
               _id:result._id,
@@ -29,11 +32,12 @@ exports.start = ()=>{
     catch(e){
       console.log(e);
     }
+    console.log(`queryrealtimedata:${JSON.stringify(arg)}`);
     let {query,option} = arg;
     query = query || {};
     option = option || {};
     db.querydb(query,option,(err,result)=>{
-        console.log(`最终获取到数据===>${JSON.stringify(result)}`);
+        console.log(`queryrealtimedata===>${JSON.stringify(result)}`);
         event.sender.send('queryrealtimedata_result', JSON.stringify({
           payload:result
         }));
@@ -49,44 +53,56 @@ exports.start = ()=>{
     catch(e){
       console.log(e);
     }
+    console.log(`serialport:${JSON.stringify(arg)}`);
     let {open} = arg;
     serialport.setopen(open,(err,result)=>{
+      console.log(`serialport===>${JSON.stringify(result)}`);
       event.sender.send('serialport_result', JSON.stringify({
         payload:result
       }));
     });
   });
 
-}
 
-//
-// exports.getrealtimedata= (callback)=>{
-//   console.log(`getrealtimedata===>`);
-//   serialport.start_measure((err,result)=>{
-//       console.log(`最终获取到数据===>${JSON.stringify(result)}`);
-//       callback({
-//         cmd:'getrealtimedata_result',
-//         payload:{
-//           _id:result._id,
-//           line1:result.line1,
-//           line2:result.line2,
-//           createtimestring:result.createtimestring
-//         }
-//       });
-//   });
-// }
-//
-//
-// exports.queryrealtimedata= (query,option,callback)=>{
-//   console.log(`getrealtimedata===>query:${JSON.stringify(query)}`);
-//   console.log(`getrealtimedata===>option:${JSON.stringify(option)}`);
-//   query = query || {};
-//   option = option || {};
-//   db.querydb(query,option,(err,result)=>{
-//       console.log(`最终获取到数据===>${JSON.stringify(result)}`);
-//       callback({
-//         cmd:'queryrealtimedata_result',
-//         payload:result
-//       });
-//   });
-// }
+    ipcMain.on('verifydata', (event, arg) => {
+      try{
+        if(typeof arg === 'string'){
+            arg = JSON.parse(arg);
+        }
+      }
+      catch(e){
+        console.log(e);
+      }
+      console.log(`verifydata:${JSON.stringify(arg)}`);
+      serialport.start_verifydatameasure(arg,(err,hexdata)=>{
+        let payload = parse.parsedata(hexdata);
+        payload.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
+        payload.verifydataflag = arg.verifydataflag;
+        console.log(`verifydata===>${JSON.stringify(payload)}`);
+        event.sender.send('verifydata_result', JSON.stringify({
+          payload
+        }));
+
+      });
+    });
+
+
+      ipcMain.on('verifydatasave', (event, arg) => {
+        try{
+          if(typeof arg === 'string'){
+              arg = JSON.parse(arg);
+          }
+        }
+        catch(e){
+          console.log(e);
+        }
+        console.log(`verifydatasave:${JSON.stringify(arg)}`);
+        db.insertdb_verifydata(arg,(err,result)=>{
+          console.log(`verifydatasave===>${JSON.stringify(result)}`);
+          event.sender.send('vverifydatasave_result', JSON.stringify({
+            result
+          }));
+        });
+      });
+
+}

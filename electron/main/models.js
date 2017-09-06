@@ -15,5 +15,21 @@ let SerialportchartSchema = new Schema({
 SerialportchartSchema.plugin(mongoosePaginate);
 let SerialportchartModel =mongoose.model('serialportchart',  SerialportchartSchema);
 
+
+let VerifydataSchema = new Schema({
+  created_at:{ type: Date, default:new Date()},
+  rawdata_hex: String,
+  rawdata_55:[],
+  rawdata_ee:[],
+  verifydataflag:Number,
+  createtimestring:String,
+});
+VerifydataSchema.plugin(mongoosePaginate);
+let VerifydataModel =mongoose.model('verifydata',  VerifydataSchema);
+
+
 exports.SerialportchartSchema = SerialportchartSchema;
 exports.SerialportchartModel = SerialportchartModel;
+
+exports.VerifydataSchema = VerifydataSchema;
+exports.VerifydataModel = VerifydataModel;

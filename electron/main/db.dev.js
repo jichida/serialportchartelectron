@@ -37,3 +37,7 @@ exports.querydb =(query,options,callback)=>{
   //   console.log(`发送到数据结束:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
   // });
 }
+
+exports.insertdb_verifydata =(arg,callback)=>{
+  callback(null,[]);
+}

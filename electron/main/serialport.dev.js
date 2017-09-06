@@ -7,7 +7,7 @@ exports.setopen = (open,callback)=>{
   // openSerialWork('COM3');
   portopened = open;
   callback(null,open);
-  
+
   ev.evEmitter.on('write_buf',()=>{
     console.log(`获取消息write_buf`);
 
@@ -47,6 +47,16 @@ b80a0807380458013ee0000882d88308830882e882e882f8830882e883187e7849c81e4808480008
   });
 
 }
+
+exports.start_verifydatameasure = (arg,callback)=>{
+    hexdata = '';
+    ev.evEmitter.removeAllListeners(['get_buf']);
+    ev.evEmitter.on('get_buf',(hexdata)=>{
+      callback(null,hexdata);
+   });
+   ev.evEmitter.emit('write_buf');
+}
+
 
 exports.start_measure = (callback)=>{
    ev.evEmitter.removeAllListeners(['get_buf']);

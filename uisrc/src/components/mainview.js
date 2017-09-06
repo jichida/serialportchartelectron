@@ -9,6 +9,8 @@ import {
   querydata_request,
   ui_clearchart,
   serialport_request,
+  verifydata_request,
+  verifydatasave_request
 } from '../actions';
 import _ from 'lodash';
 import ChartXY from './chartxy';
@@ -41,29 +43,55 @@ class MainPage extends Component {
     }
 
     renderItem1(title, content) {
-        const {createtimestring,currealtimedatalist,isserialportopen} = this.props;
+        const {createtimestring,currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata} = this.props;
         let lines = [];
-        _.map(currealtimedatalist,(currealtimedata)=>{
-          const {rawdata_55,rawdata_ee} = currealtimedata;
-          const data_55 = _.slice(rawdata_55,50,250);
-          const data_ee = _.slice(rawdata_ee,50,250);
-          let data55 = [];
-          let dataee = [];
-          _.map(data_55,(v,index)=>{
-            data55.push({x:index,y:v});
+        if(isverifydata){
+            let currealtimedata = verifydata[verifydataflag];
+            if(!!currealtimedata){
+              const {rawdata_55,rawdata_ee} = currealtimedata;
+              const data_55 = _.slice(rawdata_55,50,250);
+              const data_ee = _.slice(rawdata_ee,50,250);
+              let data55 = [];
+              let dataee = [];
+              _.map(data_55,(v,index)=>{
+                data55.push({x:index,y:v});
+              });
+              _.map(data_ee,(v,index)=>{
+                dataee.push({x:index,y:v});
+              });
+              lines.push({
+                data:data55,
+                color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+              });
+              lines.push({
+                data:dataee,
+                color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+              });
+            }
+        }
+        else{
+          _.map(currealtimedatalist,(currealtimedata)=>{
+            const {rawdata_55,rawdata_ee} = currealtimedata;
+            const data_55 = _.slice(rawdata_55,50,250);
+            const data_ee = _.slice(rawdata_ee,50,250);
+            let data55 = [];
+            let dataee = [];
+            _.map(data_55,(v,index)=>{
+              data55.push({x:index,y:v});
+            });
+            _.map(data_ee,(v,index)=>{
+              dataee.push({x:index,y:v});
+            });
+            lines.push({
+              data:data55,
+              color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+            });
+            lines.push({
+              data:dataee,
+              color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+            });
           });
-          _.map(data_ee,(v,index)=>{
-            dataee.push({x:index,y:v});
-          });
-          lines.push({
-            data:data55,
-            color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
-          });
-          lines.push({
-            data:dataee,
-            color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
-          });
-        });
+        }
 
         return (
             <NavPaneItem
@@ -104,6 +132,22 @@ class MainPage extends Component {
                                 关闭串口
                             </Button>
                             <Text>{isserialportopen?'串口打开':'串口关闭'}</Text>
+                            <Button style={{width: "20%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:0}));}} >
+                                高
+                            </Button>
+                            <Button style={{width: "20%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:1}));}} >
+                                中
+                            </Button>
+                            <Button style={{width: "20%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:2}));}} >
+                                低
+                            </Button>
+                            {
+                              isverifydata &&
+                              <Button style={{width: "20%"}} onClick={() => {this.props.dispatch(verifydatasave_request(verifydata[verifydataflag]));}} >
+                                      保存
+                              </Button>
+                            }
+
                         </div>
                         <div className="chart2" style={{height : ((window.innerHeight - 150)*.4)+"px"}}>
                             <ChartXY height={ ((window.innerHeight - 150)*.4)} width={ ((window.innerHeight - 150)*.4)} lines={lines} />
@@ -155,11 +199,11 @@ class MainPage extends Component {
 }
 
 const mapStateToProps = ({serialportdata}) => {
-    const {currealtimedatalist,isserialportopen} = serialportdata;
+    const {currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata} = serialportdata;
     let createtimestring = '';
     if(currealtimedatalist.length > 0){
       createtimestring = _.last(currealtimedatalist).createtimestring;
     }
-    return {createtimestring,currealtimedatalist,isserialportopen};
+    return {createtimestring,currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata};
 };
 export default connect(mapStateToProps)(MainPage);

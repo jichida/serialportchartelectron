@@ -8,7 +8,13 @@ import {
   querydata_result,
 
   serialport_request,
-  serialport_result
+  serialport_result,
+
+  verifydata_request,
+  verifydata_result,
+
+  verifydatasave_request,
+  verifydatasave_result
 
 } from '../actions';
 import _ from 'lodash';
@@ -16,9 +22,10 @@ import _ from 'lodash';
 const {ipcRenderer} = window.require('electron');
 // alert(`react api:${!!srvremote}`);
 //监听标记事件
-const api_getrealtimedata_request = ()=>{
+
+const api_call=(typestring,payload)=>{
   return new Promise(resolve => {
-    ipcRenderer.once('getrealtimedata_result', (event, arg) => {
+    ipcRenderer.once(`${typestring}_result`, (event, arg) => {
       try{
         if(typeof arg === 'string'){
             arg = JSON.parse(arg);
@@ -29,50 +36,16 @@ const api_getrealtimedata_request = ()=>{
       }
       resolve(arg);
     });
-    ipcRenderer.send('getrealtimedata', '');
+    ipcRenderer.send(`${typestring}`, JSON.stringify(payload));
   });
 }
 
-const api_queryrealtimedata_request =(query,option)=>{
-  return new Promise(resolve => {
-    ipcRenderer.once('queryrealtimedata_result', (event, arg) => {
-      try{
-        if(typeof arg === 'string'){
-            arg = JSON.parse(arg);
-        }
-      }
-      catch(e){
-        console.log(e);
-      }
-      resolve(arg);
-    });
-    ipcRenderer.send('queryrealtimedata', JSON.stringify({query,option}));
-  });
-}
-
-const api_serialport_request =(open)=>{
-  return new Promise(resolve => {
-    ipcRenderer.once('serialport_result', (event, arg) => {
-      try{
-        if(typeof arg === 'string'){
-            arg = JSON.parse(arg);
-        }
-      }
-      catch(e){
-        console.log(e);
-      }
-      resolve(arg);
-    });
-    ipcRenderer.send('serialport', JSON.stringify({open}));
-  });
-}
 
 export function* apiflow(){//仅执行一次
   yield takeEvery(`${getrealtimedata_request}`, function*(action) {
     try{
-      const result = yield call(api_getrealtimedata_request);
-      const {payload} = result;
-      yield put(getrealtimedata_result(payload));
+      const result = yield call(api_call,'getrealtimedata',action.payload);
+      yield put(getrealtimedata_result(result.payload));
     }
     catch(e){
       console.log(e);
@@ -82,10 +55,8 @@ export function* apiflow(){//仅执行一次
 
   yield takeEvery(`${querydata_request}`, function*(action) {
     try{
-      const {payload:{query,options}} = action;
-      const result = yield call(api_queryrealtimedata_request,query,options);
-      const {payload} = result;
-      yield put(querydata_result(payload));
+      const result = yield call(api_call,'querydata',action.payload);
+      yield put(querydata_result(result.payload));
     }
     catch(e){
       console.log(e);
@@ -94,10 +65,8 @@ export function* apiflow(){//仅执行一次
 
   yield takeEvery(`${serialport_request}`, function*(action) {
     try{
-      const {payload:{open}} = action;
-      const result = yield call(api_serialport_request,open);
-      const {payload} = result;
-      yield put(serialport_result(payload));
+      const result = yield call(api_call,'serialport',action.payload);
+      yield put(serialport_result(result.payload));
     }
     catch(e){
       console.log(e);
@@ -105,5 +74,25 @@ export function* apiflow(){//仅执行一次
 
   });
 
+  yield takeEvery(`${verifydata_request}`, function*(action) {
+    try{
+      const result = yield call(api_call,'verifydata',action.payload);
+      yield put(verifydata_result(result.payload));
+    }
+    catch(e){
+      console.log(e);
+    }
+
+  });
+
+  yield takeEvery(`${verifydatasave_request}`, function*(action) {
+    try{
+      const result = yield call(api_call,'verifydatasave',action.payload);
+      yield put(verifydatasave_result(result.payload));
+    }
+    catch(e){
+      console.log(e);
+    }
+  });
 
 }

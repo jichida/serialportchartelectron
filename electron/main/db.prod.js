@@ -19,8 +19,17 @@ exports.startdb = ()=>{
 
 
 //======插入数据库======
+exports.insertdb_verifydata =(arg,callback)=>{
+  let dbModel = DBModels.VerifydataModel;
+  dbModel.findOneAndUpdate({verifydataflag:arg.verifydataflag},{$set:arg},{
+    upsert:true,new:true
+  },(err,result)=>{
+    dbModel.find({},callback);
+  });
+}
+
 exports.insertdb =(hexdata,callback)=>{
-  const payload = parse.parsedata(hexdata);
+  let payload = parse.parsedata(hexdata);
   payload.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
 
   let dbModel = DBModels.SerialportchartModel;

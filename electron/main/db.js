@@ -12,3 +12,7 @@ exports.querydb = (query,options,callback)=>{
   console.log(`[usedb:${usedb}]querydb....`);
   db.querydb(query,options,callback);
 }
+exports.insertdb_verifydata = (arg,callback)=>{
+  console.log(`[usedb:${usedb}]insertdb_verifydata....`);
+  db.insertdb_verifydata(arg,callback);
+}

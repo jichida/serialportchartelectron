@@ -7,11 +7,92 @@ import _ from 'lodash';
 class ChartShow extends React.Component {
 
     render() {
-        const {currealtimedatalist} = this.props;
+        const {currealtimedatalist,isverifydata,verifydataflag,verifydata} = this.props;
         const contentheight = window.innerHeight - 150;
         const height = contentheight*0.6;
         const width = (window.innerWidth-242)*0.8;
-        if(currealtimedatalist.length === 0){
+
+        let lines = [];
+        let labels_data = [];
+        let isnodata = false;
+        if(isverifydata){
+          let currealtimedata = verifydata[verifydataflag];
+          isnodata = !currealtimedata;
+          if(!isnodata){
+            const {rawdata_55,rawdata_ee} = currealtimedata;
+            const data_55 = _.slice(rawdata_55,50,250);
+            const data_ee = _.slice(rawdata_ee,50,250);
+            let tee = 0;
+            let linedata = [];
+
+            _.map(data_55,(v,index)=>{
+              tee = tee + data_ee[index];
+              linedata.push({x:v,y:tee});
+            });
+            const line_y_max = _.maxBy(linedata,'y');
+            const line_y_min = _.minBy(linedata,'y');
+            _.map(linedata,(lineobj,index)=>{
+              if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
+                labels_data.push({
+                  x:lineobj.x,
+                  y:lineobj.y,
+                  label: `${lineobj.x},${lineobj.y}`
+                });
+              }
+              if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
+                labels_data.push({
+                  x:lineobj.x,
+                  y:lineobj.y,
+                  label: `${lineobj.x},${lineobj.y}`
+                });
+              }
+            })
+            lines.push({
+              data:linedata,
+              color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+            });
+          }
+        }
+        else{
+          isnodata = currealtimedatalist.length === 0;
+          if(!isnodata){
+            _.map(currealtimedatalist,(currealtimedata)=>{
+              const {rawdata_55,rawdata_ee} = currealtimedata;
+              const data_55 = _.slice(rawdata_55,50,250);
+              const data_ee = _.slice(rawdata_ee,50,250);
+              let tee = 0;
+              let linedata = [];
+
+              _.map(data_55,(v,index)=>{
+                tee = tee + data_ee[index];
+                linedata.push({x:v,y:tee});
+              });
+              const line_y_max = _.maxBy(linedata,'y');
+              const line_y_min = _.minBy(linedata,'y');
+              _.map(linedata,(lineobj,index)=>{
+                if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
+                  labels_data.push({
+                    x:lineobj.x,
+                    y:lineobj.y,
+                    label: `${lineobj.x},${lineobj.y}`
+                  });
+                }
+                if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
+                  labels_data.push({
+                    x:lineobj.x,
+                    y:lineobj.y,
+                    label: `${lineobj.x},${lineobj.y}`
+                  });
+                }
+              })
+              lines.push({
+                data:linedata,
+                color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+              });
+            });
+          }
+        }
+        if(isnodata){
             return (
                 <View
                     padding="20px"
@@ -26,42 +107,6 @@ class ChartShow extends React.Component {
                 </View>
             );
         }
-        let lines = [];
-        let labels_data = [];
-        _.map(currealtimedatalist,(currealtimedata)=>{
-          const {rawdata_55,rawdata_ee} = currealtimedata;
-          const data_55 = _.slice(rawdata_55,50,250);
-          const data_ee = _.slice(rawdata_ee,50,250);
-          let tee = 0;
-          let linedata = [];
-
-          _.map(data_55,(v,index)=>{
-            tee = tee + data_ee[index];
-            linedata.push({x:v,y:tee});
-          });
-          const line_y_max = _.maxBy(linedata,'y');
-          const line_y_min = _.minBy(linedata,'y');
-          _.map(linedata,(lineobj,index)=>{
-            if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
-              labels_data.push({
-                x:lineobj.x,
-                y:lineobj.y,
-                label: `${lineobj.x},${lineobj.y}`
-              });
-            }
-            if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
-              labels_data.push({
-                x:lineobj.x,
-                y:lineobj.y,
-                label: `${lineobj.x},${lineobj.y}`
-              });
-            }
-          })
-          lines.push({
-            data:linedata,
-            color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
-          });
-        });
         console.log(`lines:${JSON.stringify(lines)}`);
         return (
             <ChartXY height={height} width={width} lines={lines} labels_data={labels_data}/>
@@ -70,8 +115,8 @@ class ChartShow extends React.Component {
 }
 
 const mapStateToProps = ({serialportdata}) => {
-    const {currealtimedatalist} = serialportdata;
-    return {currealtimedatalist};
+    const {currealtimedatalist,isverifydata,verifydataflag,verifydata} = serialportdata;
+    return {currealtimedatalist,isverifydata,verifydataflag,verifydata};
 };
 
 export default connect(mapStateToProps)(ChartShow);
