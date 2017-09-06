@@ -13,6 +13,7 @@ export const keepalive_request  = createAction('keepalive_request');
 export const keepalive_result  = createAction('keepalive_result');
 
 export const ui_changedate = createAction('ui_changedate');
+export const ui_checkonly = createAction('ui_checkonly');
 
 
 export const ui_clearchart = createAction('ui_clearchart');

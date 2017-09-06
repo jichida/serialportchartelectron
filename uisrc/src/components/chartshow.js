@@ -7,7 +7,7 @@ import _ from 'lodash';
 class ChartShow extends React.Component {
 
     render() {
-        const {currealtimedatalist,isverifydata,verifydataflag,verifydata} = this.props;
+        const {currealtimedatalist,isverifydata,verifydataflag,verifydata,isonlyfinal,isonlylast} = this.props;
         const contentheight = window.innerHeight - 150;
         const height = contentheight*0.5;
         const width = (window.innerWidth-242)*0.8;
@@ -56,68 +56,73 @@ class ChartShow extends React.Component {
         else{
           isnodata = currealtimedatalist.length === 0;
           if(!isnodata){
-            _.map(currealtimedatalist,(currealtimedata)=>{
-              const {rawdata_55,rawdata_ee} = currealtimedata;
-              let data_vt;
-              const data_55 = _.slice(rawdata_55,50,250);
-              const data_ee = _.slice(rawdata_ee,50,250);
-              let tee = 0;
-              let linedata = [];//结果线
-              let linedatavt = [];//偏差线
-              let linedataraw = [];//原始线
-              let teeverifydata = verifydata[currealtimedata.verifydataflag];
-              if(!!teeverifydata){
-                let data_v = _.slice(teeverifydata.rawdata_ee,50,250);
+            _.map(currealtimedatalist,(currealtimedata,index)=>{
+                if((isonlylast && index===currealtimedatalist.length-1) || !isonlylast){
+                const {rawdata_55,rawdata_ee} = currealtimedata;
+                let data_vt;
+                const data_55 = _.slice(rawdata_55,50,250);
+                const data_ee = _.slice(rawdata_ee,50,250);
                 let tee = 0;
-                data_vt=[];
-                _.map(data_v,(v,index)=>{
-                  tee = tee + data_v[index];
-                  data_vt.push(tee);
-                  linedatavt.push({x:data_55[index],y:tee});
+                let linedata = [];//结果线
+                let linedatavt = [];//偏差线
+                let linedataraw = [];//原始线
+                let teeverifydata = verifydata[currealtimedata.verifydataflag];
+                if(!!teeverifydata){
+                  let data_v = _.slice(teeverifydata.rawdata_ee,50,250);
+                  let tee = 0;
+                  data_vt=[];
+                  _.map(data_v,(v,index)=>{
+                    tee = tee + data_v[index];
+                    data_vt.push(tee);
+                    linedatavt.push({x:data_55[index],y:tee});
+                  });
+                }
+
+
+                _.map(data_55,(v,index)=>{
+                  tee = tee + data_ee[index];
+                  let teetmp = tee;
+                  if(!!data_vt){
+                    teetmp -= data_vt[index];
+                  }
+                  linedataraw.push({x:v,y:tee});
+                  linedata.push({x:v,y:teetmp});
                 });
+                const line_y_max = _.maxBy(linedata,'y');
+                const line_y_min = _.minBy(linedata,'y');
+                _.map(linedata,(lineobj,index)=>{
+                  if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
+                    labels_data.push({
+                      x:lineobj.x,
+                      y:lineobj.y,
+                      label: `${lineobj.x},${lineobj.y}`
+                    });
+                  }
+                  if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
+                    labels_data.push({
+                      x:lineobj.x,
+                      y:lineobj.y,
+                      label: `${lineobj.x},${lineobj.y}`
+                    });
+                  }
+                })
+                lines.push({
+                  data:linedata,
+                  color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+                });
+                if(!isonlyfinal){
+                  lines.push({
+                    data:linedatavt,
+                    color:'#' + parseInt(0xff0000).toString(16)
+                  });
+                  lines.push({
+                    data:linedataraw,
+                    color:'#' + parseInt(0x00ff00).toString(16)
+                  });
+                }
               }
-
-
-              _.map(data_55,(v,index)=>{
-                tee = tee + data_ee[index];
-                let teetmp = tee;
-                if(!!data_vt){
-                  teetmp -= data_vt[index];
-                }
-                linedataraw.push({x:v,y:tee});
-                linedata.push({x:v,y:teetmp});
-              });
-              const line_y_max = _.maxBy(linedata,'y');
-              const line_y_min = _.minBy(linedata,'y');
-              _.map(linedata,(lineobj,index)=>{
-                if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
-                  labels_data.push({
-                    x:lineobj.x,
-                    y:lineobj.y,
-                    label: `${lineobj.x},${lineobj.y}`
-                  });
-                }
-                if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
-                  labels_data.push({
-                    x:lineobj.x,
-                    y:lineobj.y,
-                    label: `${lineobj.x},${lineobj.y}`
-                  });
-                }
-              })
-              lines.push({
-                data:linedata,
-                color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
-              });
-              lines.push({
-                data:linedatavt,
-                color:'#' + parseInt(0xff0000).toString(16)
-              });
-              lines.push({
-                data:linedataraw,
-                color:'#' + parseInt(0x00ff00).toString(16)
-              });
             });
+
           }
         }
         if(isnodata){
@@ -143,8 +148,8 @@ class ChartShow extends React.Component {
 }
 
 const mapStateToProps = ({serialportdata}) => {
-    const {currealtimedatalist,isverifydata,verifydataflag,verifydata} = serialportdata;
-    return {currealtimedatalist,isverifydata,verifydataflag,verifydata};
+    const {currealtimedatalist,isverifydata,verifydataflag,verifydata,isonlyfinal,isonlylast} = serialportdata;
+    return {currealtimedatalist,isverifydata,verifydataflag,verifydata,isonlyfinal,isonlylast};
 };
 
 export default connect(mapStateToProps)(ChartShow);

@@ -3,14 +3,15 @@ import {connect} from 'react-redux';
 import { NavPane, NavPaneItem, Text } from 'react-desktop/windows';
 import ChartShow from './chartshow';
 import Historydata from './historydata';
-import { Button } from 'antd';
+import { Button,Checkbox } from 'antd';
 import {
   getrealtimedata_request,
   querydata_request,
   ui_clearchart,
   serialport_request,
   verifydata_request,
-  verifydatasave_request
+  verifydatasave_request,
+  ui_checkonly
 } from '../actions';
 import _ from 'lodash';
 import ChartXY from './chartxy';
@@ -43,7 +44,7 @@ class MainPage extends Component {
     }
 
     renderItem1(title, content) {
-        const {createtimestring,currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata} = this.props;
+        const {createtimestring,currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata,isonlyfinal,isonlylast} = this.props;
         let lines = [];
         if(isverifydata){
             let currealtimedata = verifydata[verifydataflag];
@@ -70,26 +71,29 @@ class MainPage extends Component {
             }
         }
         else{
-          _.map(currealtimedatalist,(currealtimedata)=>{
-            const {rawdata_55,rawdata_ee} = currealtimedata;
-            const data_55 = _.slice(rawdata_55,50,250);
-            const data_ee = _.slice(rawdata_ee,50,250);
-            let data55 = [];
-            let dataee = [];
-            _.map(data_55,(v,index)=>{
-              data55.push({x:index,y:v});
-            });
-            _.map(data_ee,(v,index)=>{
-              dataee.push({x:index,y:v});
-            });
-            lines.push({
-              data:data55,
-              color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
-            });
-            lines.push({
-              data:dataee,
-              color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
-            });
+          _.map(currealtimedatalist,(currealtimedata,index)=>{
+            if((isonlylast && index===currealtimedatalist.length-1) || !isonlylast){
+              const {rawdata_55,rawdata_ee} = currealtimedata;
+              const data_55 = _.slice(rawdata_55,50,250);
+              const data_ee = _.slice(rawdata_ee,50,250);
+              let data55 = [];
+              let dataee = [];
+              _.map(data_55,(v,index)=>{
+                data55.push({x:index,y:v});
+              });
+              _.map(data_ee,(v,index)=>{
+                dataee.push({x:index,y:v});
+              });
+              lines.push({
+                data:data55,
+                color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+              });
+              lines.push({
+                data:dataee,
+                color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+              });
+            }
+
           });
         }
 
@@ -125,6 +129,22 @@ class MainPage extends Component {
                     </span>
                     <div style={{width: "100%",paddingTop:"10px"}} className="mainchart2content">
                         <div style={{width: "50%"}} className="btnlist">
+                            <Checkbox checked={isonlyfinal} onChange={
+                              ()=>{
+                                this.props.dispatch(ui_checkonly({
+                                  isonlyfinal:!isonlyfinal,
+                                  isonlylast
+                                }));
+                              }
+                            }>仅显示最终结果</Checkbox>
+                            <Checkbox checked={isonlylast} onChange={
+                              ()=>{
+                                this.props.dispatch(ui_checkonly({
+                                  isonlyfinal,
+                                  isonlylast:!isonlylast,
+                                }));
+                              }
+                              }>仅显示最后一次结果</Checkbox>
                             <div style={{display: "flex"}}>
                                 <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({verifydataflag:0}));}} >
                                     开始测量（高）
@@ -215,11 +235,11 @@ class MainPage extends Component {
 }
 
 const mapStateToProps = ({serialportdata}) => {
-    const {currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata} = serialportdata;
+    const {currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata,isonlyfinal,isonlylast} = serialportdata;
     let createtimestring = '';
     if(currealtimedatalist.length > 0){
       createtimestring = _.last(currealtimedatalist).createtimestring;
     }
-    return {createtimestring,currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata};
+    return {createtimestring,currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata,isonlyfinal,isonlylast};
 };
 export default connect(mapStateToProps)(MainPage);

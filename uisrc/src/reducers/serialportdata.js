@@ -6,11 +6,14 @@ import {
   verifydata_request,
   verifydata_result,
   verifydatasave_result,
+  ui_checkonly
 } from '../actions';
 import _ from 'lodash';
 
 const initial = {
   serialportdata: {
+    isonlyfinal:false,
+    isonlylast:false,
     isserialportopen:false,
     currealtimedatalist:[],
     isverifydata:false,
@@ -26,6 +29,10 @@ const serialportdata = createReducer({
     const currealtimedatalist = [...state.currealtimedatalist];
     currealtimedatalist.push(currealtimedata);
     return {...state,currealtimedatalist,isverifydata:false};
+  },
+  [ui_checkonly]:(state,payload)=>{
+    const {isonlyfinal,isonlylast} = payload;
+    return {...state,isonlyfinal,isonlylast};
   },
   [ui_clearchart]:(state,payload)=>{
     let currealtimedatalist = [];
