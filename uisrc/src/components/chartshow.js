@@ -59,6 +59,12 @@ class ChartShow extends React.Component {
             _.map(currealtimedatalist,(currealtimedata)=>{
               const {rawdata_55,rawdata_ee} = currealtimedata;
               let data_vt;
+              const data_55 = _.slice(rawdata_55,50,250);
+              const data_ee = _.slice(rawdata_ee,50,250);
+              let tee = 0;
+              let linedata = [];//结果线
+              let linedatavt = [];//偏差线
+              let linedataraw = [];//原始线
               let teeverifydata = verifydata[currealtimedata.verifydataflag];
               if(!!teeverifydata){
                 let data_v = _.slice(teeverifydata.rawdata_ee,50,250);
@@ -67,13 +73,10 @@ class ChartShow extends React.Component {
                 _.map(data_v,(v,index)=>{
                   tee = tee + data_v[index];
                   data_vt.push(tee);
+                  linedatavt.push({x:data_55[index],y:tee});
                 });
               }
 
-              const data_55 = _.slice(rawdata_55,50,250);
-              const data_ee = _.slice(rawdata_ee,50,250);
-              let tee = 0;
-              let linedata = [];
 
               _.map(data_55,(v,index)=>{
                 tee = tee + data_ee[index];
@@ -81,6 +84,7 @@ class ChartShow extends React.Component {
                 if(!!data_vt){
                   teetmp -= data_vt[index];
                 }
+                linedataraw.push({x:v,y:tee});
                 linedata.push({x:v,y:teetmp});
               });
               const line_y_max = _.maxBy(linedata,'y');
@@ -105,6 +109,14 @@ class ChartShow extends React.Component {
                 data:linedata,
                 color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
               });
+              lines.push({
+                data:linedatavt,
+                color:'#' + parseInt(0xff0000).toString(16)
+              });
+              lines.push({
+                data:linedataraw,
+                color:'#' + parseInt(0x00ff00).toString(16)
+              });
             });
           }
         }
@@ -123,7 +135,7 @@ class ChartShow extends React.Component {
                 </View>
             );
         }
-        console.log(`lines:${JSON.stringify(lines)}`);
+        // console.log(`lines:${JSON.stringify(lines)}`);
         return (
             <ChartXY height={height} width={width} lines={lines} labels_data={labels_data}/>
         );

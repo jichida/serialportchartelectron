@@ -54,7 +54,7 @@ const parsedata = (hexdata)=>{
     rawdata_55:datax.data,
     rawdata_ee:datay.data,
   };
-  console.log(`最终:payload:${JSON.stringify(payload)}`);
+  // console.log(`最终:payload:${JSON.stringify(payload)}`);
   return payload;
 }
 

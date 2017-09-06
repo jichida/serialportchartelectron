@@ -8,7 +8,13 @@ import {
   querydata_result,
 
   serialport_request,
-  serialport_result
+  serialport_result,
+
+  verifydata_request,
+  verifydata_result,
+
+  verifydatasave_request,
+  verifydatasave_result
 
 } from '../actions';
 import _ from 'lodash';
@@ -106,6 +112,33 @@ export function* apiflow(){//仅执行一次
     }
 
   });
+  yield takeEvery(`${verifydata_request}`, function*(action) {
+    try{
+      sampledata.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
+      sampledata.verifydataflag = action.payload.verifydataflag;
+      // const result = yield call(api_call,'verifydata',action.payload);
+      yield put(verifydata_result(sampledata));
+    }
+    catch(e){
+      console.log(e);
+    }
 
+  });
+
+  yield takeEvery(`${verifydatasave_request}`, function*(action) {
+    try{
+      //const result = yield call(api_call,'verifydatasave',action.payload);
+      let list = [];
+      for(let i=0;i<3;i++){
+        sampledata.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
+        sampledata.verifydataflag = i;
+        list.push(sampledata);
+      }
+      yield put(verifydatasave_result(list));
+    }
+    catch(e){
+      console.log(e);
+    }
+  });
 
 }
