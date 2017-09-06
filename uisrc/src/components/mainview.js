@@ -119,9 +119,17 @@ class MainPage extends Component {
                     </span>
                     <div style={{width: "100%",paddingTop:"10px"}} className="mainchart2content">
                         <div style={{width: "50%"}} className="btnlist">
-                            <Button style={{width: "80%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}} >
-                                开始测量
-                            </Button>
+                            <div style={{display: "flex"}}>
+                                <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}} >
+                                    开始测量（高）
+                                </Button>
+                                <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}} >
+                                    开始测量（中）
+                                </Button>
+                                <Button style={{width: "24%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}} >
+                                    开始测量（低）
+                                </Button>
+                            </div>
                             <Button style={{width: "80%"}} onClick={() => {this.props.dispatch(ui_clearchart({}));}} >
                                 清空图表
                             </Button>
@@ -132,15 +140,17 @@ class MainPage extends Component {
                                 关闭串口
                             </Button>
                             <Text>{isserialportopen?'串口打开':'串口关闭'}</Text>
-                            <Button style={{width: "20%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:0}));}} >
+                            <div style={{display: "flex"}}>
+                            <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:0}));}} >
                                 高
                             </Button>
-                            <Button style={{width: "20%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:1}));}} >
+                            <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:1}));}} >
                                 中
                             </Button>
-                            <Button style={{width: "20%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:2}));}} >
+                            <Button style={{width: "24%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:2}));}} >
                                 低
                             </Button>
+                            </div>
                             {
                               isverifydata &&
                               <Button style={{width: "20%"}} onClick={() => {this.props.dispatch(verifydatasave_request(verifydata[verifydataflag]));}} >

@@ -9,7 +9,7 @@ class ChartShow extends React.Component {
     render() {
         const {currealtimedatalist,isverifydata,verifydataflag,verifydata} = this.props;
         const contentheight = window.innerHeight - 150;
-        const height = contentheight*0.6;
+        const height = contentheight*0.5;
         const width = (window.innerWidth-242)*0.8;
 
         let lines = [];
