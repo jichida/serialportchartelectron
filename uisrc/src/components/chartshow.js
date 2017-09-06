@@ -63,6 +63,7 @@ class ChartShow extends React.Component {
               if(!!teeverifydata){
                 let data_v = _.slice(teeverifydata.rawdata_ee,50,250);
                 let tee = 0;
+                data_vt=[];
                 _.map(data_v,(v,index)=>{
                   tee = tee + data_v[index];
                   data_vt.push(tee);
@@ -76,10 +77,11 @@ class ChartShow extends React.Component {
 
               _.map(data_55,(v,index)=>{
                 tee = tee + data_ee[index];
+                let teetmp = tee;
                 if(!!data_vt){
-                  tee -= data_vt[index];
+                  teetmp -= data_vt[index];
                 }
-                linedata.push({x:v,y:tee});
+                linedata.push({x:v,y:teetmp});
               });
               const line_y_max = _.maxBy(linedata,'y');
               const line_y_min = _.minBy(linedata,'y');
