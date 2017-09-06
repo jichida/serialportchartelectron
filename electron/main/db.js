@@ -4,9 +4,9 @@ exports.startdb =()=>{
   console.log(`[usedb:${usedb}]startdb....`);
   db.startdb();
 }
-exports.insertdb = (hexdata,callback)=>{
+exports.insertdb = (arg,hexdata,callback)=>{
   console.log(`[usedb:${usedb}]insertdb....`);
-  db.insertdb(hexdata,callback);
+  db.insertdb(arg,hexdata,callback);
 }
 exports.querydb = (query,options,callback)=>{
   console.log(`[usedb:${usedb}]querydb....`);

@@ -28,10 +28,10 @@ exports.insertdb_verifydata =(arg,callback)=>{
   });
 }
 
-exports.insertdb =(hexdata,callback)=>{
+exports.insertdb =(arg,hexdata,callback)=>{
   let payload = parse.parsedata(hexdata);
   payload.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
-
+  payload.verifydataflag = arg.verifydataflag;
   let dbModel = DBModels.SerialportchartModel;
   let entity = new dbModel(payload);
   entity.save((err,newdata)=>{

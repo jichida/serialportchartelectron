@@ -7,14 +7,23 @@ const moment = require('moment');
 
 exports.start = ()=>{
   ipcMain.on('getrealtimedata', (event, arg) => {
-    console.log(`getrealtimedata`);
-    serialport.start_measure((err,result)=>{
+    try{
+      if(typeof arg === 'string'){
+          arg = JSON.parse(arg);
+      }
+    }
+    catch(e){
+      console.log(e);
+    }
+    console.log(`getrealtimedata:${JSON.stringify(arg)}`);
+    serialport.start_measure(arg,(err,result)=>{
         console.log(`getrealtimedata===>${JSON.stringify(result)}`);
         event.sender.send('getrealtimedata_result', JSON.stringify({
             payload:{
               _id:result._id,
               rawdata_55:result.rawdata_55,
               rawdata_ee:result.rawdata_ee,
+              verifydataflag:result.verifydataflag,
               createtimestring:result.createtimestring
             }
         })

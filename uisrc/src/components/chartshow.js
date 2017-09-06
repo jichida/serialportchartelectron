@@ -15,7 +15,7 @@ class ChartShow extends React.Component {
         let lines = [];
         let labels_data = [];
         let isnodata = false;
-        if(isverifydata){
+        if(isverifydata){//校验数据
           let currealtimedata = verifydata[verifydataflag];
           isnodata = !currealtimedata;
           if(!isnodata){
@@ -58,6 +58,12 @@ class ChartShow extends React.Component {
           if(!isnodata){
             _.map(currealtimedatalist,(currealtimedata)=>{
               const {rawdata_55,rawdata_ee} = currealtimedata;
+              let data_v;
+              let teeverifydata = verifydata[currealtimedata.verifydataflag];
+              if(!!teeverifydata){
+                data_v = _.slice(teeverifydata.rawdata_ee,50,250);
+              }
+
               const data_55 = _.slice(rawdata_55,50,250);
               const data_ee = _.slice(rawdata_ee,50,250);
               let tee = 0;
@@ -65,6 +71,9 @@ class ChartShow extends React.Component {
 
               _.map(data_55,(v,index)=>{
                 tee = tee + data_ee[index];
+                if(!!data_v){
+                  tee -= data_v[index];
+                }
                 linedata.push({x:v,y:tee});
               });
               const line_y_max = _.maxBy(linedata,'y');

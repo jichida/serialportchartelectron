@@ -11,7 +11,7 @@ exports.startdb = ()=>{
 
 
 //======插入数据库======
-exports.insertdb =(hexdata,callback)=>{
+exports.insertdb =(arg,hexdata,callback)=>{
   const payload = parse.parsedata(hexdata);
   payload.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
   callback(null,payload);

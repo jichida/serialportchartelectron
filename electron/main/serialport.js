@@ -3,9 +3,9 @@ const serialport = require('./serialport.dev.js');
 //   console.log(`init....`);
 //   serialport.start();
 // }
-exports.start_measure = (callback)=>{
+exports.start_measure = (arg,callback)=>{
   console.log(`start_measure....`);
-  serialport.start_measure(callback);
+  serialport.start_measure(arg,callback);
 }
 exports.setopen =(open,callback)=>{
   console.log(`start_measure....`);

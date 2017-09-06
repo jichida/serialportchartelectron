@@ -72,11 +72,11 @@ exports.start_verifydatameasure = (arg,callback)=>{
    ev.evEmitter.emit('write_buf');
 }
 
-exports.start_measure = (callback)=>{
+exports.start_measure = (arg,callback)=>{
    hexdata = '';
    ev.evEmitter.removeAllListeners(['get_buf']);
    ev.evEmitter.on('get_buf',(hexdata)=>{
-   db.insertdb(hexdata,(err,result)=>{
+   db.insertdb(arg,hexdata,(err,result)=>{
       callback(err,result);
     });
   });

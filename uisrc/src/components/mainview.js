@@ -93,6 +93,12 @@ class MainPage extends Component {
           });
         }
 
+        let labelflag = '';
+        labelflag += `校验数据-高:${!!verifydata[0]},`;
+        labelflag += `中:${!!verifydata[1]},`;
+        labelflag += `低:${!!verifydata[2]}`;
+
+
         return (
             <NavPaneItem
                 title={<span style={{color: "#FFF"}}>{title}</span>}
@@ -120,13 +126,13 @@ class MainPage extends Component {
                     <div style={{width: "100%",paddingTop:"10px"}} className="mainchart2content">
                         <div style={{width: "50%"}} className="btnlist">
                             <div style={{display: "flex"}}>
-                                <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}} >
+                                <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({verifydataflag:0}));}} >
                                     开始测量（高）
                                 </Button>
-                                <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}} >
+                                <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({verifydataflag:1}));}} >
                                     开始测量（中）
                                 </Button>
-                                <Button style={{width: "24%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({}));}} >
+                                <Button style={{width: "24%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({verifydataflag:2}));}} >
                                     开始测量（低）
                                 </Button>
                             </div>
@@ -139,7 +145,7 @@ class MainPage extends Component {
                             <Button style={{width: "80%"}} onClick={() => {this.props.dispatch(serialport_request({open:false}));}} >
                                 关闭串口
                             </Button>
-                            <Text>{isserialportopen?'串口打开':'串口关闭'}</Text>
+                            <Text>{isserialportopen?'串口打开':'串口关闭'}{labelflag}</Text>
                             <div style={{display: "flex"}}>
                             <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(verifydata_request({verifydataflag:0}));}} >
                                 高

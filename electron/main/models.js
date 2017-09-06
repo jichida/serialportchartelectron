@@ -9,6 +9,7 @@ let SerialportchartSchema = new Schema({
   rawdata_hex: String,
   rawdata_55:[],
   rawdata_ee:[],
+  verifydataflag:Number,
   createtimestring:String,
 });
 
