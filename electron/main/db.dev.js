@@ -41,3 +41,8 @@ exports.querydb =(query,options,callback)=>{
 exports.insertdb_verifydata =(arg,callback)=>{
   callback(null,[]);
 }
+
+
+exports.querydb_verifydata =(arg,callback)=>{
+  callback(null,[]);
+}

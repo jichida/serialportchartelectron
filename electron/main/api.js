@@ -108,10 +108,29 @@ exports.start = ()=>{
         console.log(`verifydatasave:${JSON.stringify(arg)}`);
         db.insertdb_verifydata(arg,(err,result)=>{
           console.log(`verifydatasave===>${JSON.stringify(result)}`);
-          event.sender.send('vverifydatasave_result', JSON.stringify({
+          event.sender.send('verifydatasave_result', JSON.stringify({
             result
           }));
         });
       });
+
+      ipcMain.on('queryverifydata', (event, arg) => {
+        try{
+          if(typeof arg === 'string'){
+              arg = JSON.parse(arg);
+          }
+        }
+        catch(e){
+          console.log(e);
+        }
+        console.log(`queryverifydata:${JSON.stringify(arg)}`);
+        db.querydb_verifydata(arg,(err,result)=>{
+          console.log(`queryverifydata===>${JSON.stringify(result)}`);
+          event.sender.send('queryverifydata_result', JSON.stringify({
+            result
+          }));
+        });
+      });
+
 
 }

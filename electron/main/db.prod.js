@@ -53,3 +53,8 @@ exports.querydb =(query,options,callback)=>{
     console.log(`发送到数据结束:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
   });
 }
+
+exports.querydb_verifydata =(arg,callback)=>{
+  let dbModel = DBModels.VerifydataModel;
+  dbModel.find({},callback);
+}

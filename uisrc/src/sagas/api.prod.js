@@ -16,6 +16,8 @@ import {
   verifydatasave_request,
   verifydatasave_result
 
+  queryverifydata_request,
+  queryverifydata_result
 } from '../actions';
 import _ from 'lodash';
 
@@ -89,6 +91,16 @@ export function* apiflow(){//仅执行一次
     try{
       const result = yield call(api_call,'verifydatasave',action.payload);
       yield put(verifydatasave_result(result.payload));
+    }
+    catch(e){
+      console.log(e);
+    }
+  });
+  
+  yield takeEvery(`${queryverifydata_request}`, function*(action) {
+    try{
+      const result = yield call(api_call,'queryverifydata',action.payload);
+      yield put(queryverifydata_result(result.payload));
     }
     catch(e){
       console.log(e);

@@ -144,7 +144,7 @@ class MainPage extends Component {
                                   isonlylast:!isonlylast,
                                 }));
                               }
-                              }>仅显示最后一次结果</Checkbox>
+                            }>仅显示最近一次结果</Checkbox>
                             <div style={{display: "flex"}}>
                                 <Button style={{width: "24%",marginRight:"4%"}} onClick={() => {this.props.dispatch(getrealtimedata_request({verifydataflag:0}));}} >
                                     开始测量（高）

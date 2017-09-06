@@ -16,3 +16,7 @@ exports.insertdb_verifydata = (arg,callback)=>{
   console.log(`[usedb:${usedb}]insertdb_verifydata....`);
   db.insertdb_verifydata(arg,callback);
 }
+exports.querydb_verifydata = (arg,callback)=>{
+  console.log(`[usedb:${usedb}]querydb_verifydata....`);
+  db.querydb_verifydata(arg,callback);
+}

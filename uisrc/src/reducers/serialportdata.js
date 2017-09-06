@@ -6,6 +6,7 @@ import {
   verifydata_request,
   verifydata_result,
   verifydatasave_result,
+  queryverifydata_result,
   ui_checkonly
 } from '../actions';
 import _ from 'lodash';
@@ -49,6 +50,14 @@ const serialportdata = createReducer({
   [verifydata_result]:(state,payload)=>{
     let verifydata = {...state.verifydata};
     verifydata[payload.verifydataflag] = payload;
+    return {...state,verifydata};
+  },
+  [queryverifydata_result]:(state,payload)=>{
+    let list = {...payload};
+    let verifydata = {};
+    _.map(list,(data)=>{
+      verifydata[data.verifydataflag] = data;
+    });
     return {...state,verifydata};
   },
   [verifydatasave_result]:(state,payload)=>{

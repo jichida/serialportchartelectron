@@ -26,3 +26,6 @@ export const verifydata_result = createAction('verifydata_result');
 
 export const verifydatasave_request = createAction('verifydatasave_request');
 export const verifydatasave_result = createAction('verifydatasave_result');
+
+export const queryverifydata_request = createAction('queryverifydata_request');
+export const queryverifydata_result = createAction('queryverifydata_result');
