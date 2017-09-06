@@ -5,6 +5,7 @@ const db = require('./db.js');
 const hex_data_len = 2404;
 let port;
 let portopened = false;
+let hexdata = '';
 const openSerialWork = (portnumber,callback)=>{
   port = new SerialPort(portnumber, {
     autoOpen: true,
@@ -18,10 +19,10 @@ const openSerialWork = (portnumber,callback)=>{
 // 第一组数据作为横坐标，第二组数据纵坐标，横坐标上升阶段用一种颜色，下降阶段用另一种颜色表示，组成一组闭合曲线。
 // 注意：第二组数据纵坐标是积分值，第2个是第1、2两个相加的值，第3个是1、2、3累加的值，负数则减。
 
-  let hexdata = '';
+ 
   port.on('data', (data)=> {
     hexdata += data.toString('hex');
-	  console.log(`readfrom serialport:${hexdata}`);
+	console.log(`readfrom serialport:${hexdata.length/2}`);
     if(hexdata.length >= hex_data_len){
       console.log(`get one data!`);
       ev.evEmitter.emit('get_buf',hexdata);
