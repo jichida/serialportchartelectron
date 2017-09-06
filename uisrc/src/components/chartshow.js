@@ -58,10 +58,15 @@ class ChartShow extends React.Component {
           if(!isnodata){
             _.map(currealtimedatalist,(currealtimedata)=>{
               const {rawdata_55,rawdata_ee} = currealtimedata;
-              let data_v;
+              let data_vt;
               let teeverifydata = verifydata[currealtimedata.verifydataflag];
               if(!!teeverifydata){
-                data_v = _.slice(teeverifydata.rawdata_ee,50,250);
+                let data_v = _.slice(teeverifydata.rawdata_ee,50,250);
+                let tee = 0;
+                _.map(data_v,(v,index)=>{
+                  tee = tee + data_v[index];
+                  data_vt.push(tee);
+                });
               }
 
               const data_55 = _.slice(rawdata_55,50,250);
@@ -71,8 +76,8 @@ class ChartShow extends React.Component {
 
               _.map(data_55,(v,index)=>{
                 tee = tee + data_ee[index];
-                if(!!data_v){
-                  tee -= data_v[index];
+                if(!!data_vt){
+                  tee -= data_vt[index];
                 }
                 linedata.push({x:v,y:tee});
               });
