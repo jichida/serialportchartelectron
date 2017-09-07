@@ -26,7 +26,7 @@ class ChartShow extends React.Component {
             let linedata = [];
 
             _.map(data_55,(v,index)=>{
-			  tee += data_ee[index];		
+			  tee += data_ee[index];
               linedata.push({x:v,y:tee});
             });
             const line_y_max = _.maxBy(linedata,'y');
@@ -50,7 +50,7 @@ class ChartShow extends React.Component {
                 });
               }
               if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
-				let labely = parseInt(lineobj.y);  
+				let labely = parseInt(lineobj.y);
                 labels_data.push({
                   x:lineobj.x,
                   y:lineobj.y,
@@ -74,10 +74,11 @@ class ChartShow extends React.Component {
 					let linedata = result.linedata;
 					let linedatavt = result.linedatavt;
 					let linedataraw = result.linedataraw;
-				
+
 					const line_y_max = _.maxBy(linedata,'y');
 					const line_y_min = _.minBy(linedata,'y');
 					const line_x_min = _.minBy(linedata,'x');
+          let diff = line_y_max.y - line_y_min.y;
 					diff = parseInt(diff);
 					labels_data.push({
 						  x:line_x_min.x,
