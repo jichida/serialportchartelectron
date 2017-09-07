@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { View, Text } from 'react-desktop/windows';
 import ChartXY from './chartxy';
 import _ from 'lodash';
-
+import {getlinedata} from './getlinedata';
 class ChartShow extends React.Component {
 
     render() {
@@ -26,24 +26,35 @@ class ChartShow extends React.Component {
             let linedata = [];
 
             _.map(data_55,(v,index)=>{
-              tee = tee + data_ee[index];
+			  tee += data_ee[index];		
               linedata.push({x:v,y:tee});
             });
             const line_y_max = _.maxBy(linedata,'y');
             const line_y_min = _.minBy(linedata,'y');
+			const line_x_min = _.minBy(linedata,'x');
+			let diff = line_y_max.y - line_y_min.y;
+
+			diff = parseInt(diff);
+			labels_data.push({
+                  x:line_x_min.x,
+                  y:line_y_max.y,
+                  label: `相差:${diff}`
+            });
             _.map(linedata,(lineobj,index)=>{
               if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
+				let labely = parseInt(lineobj.y);
                 labels_data.push({
                   x:lineobj.x,
                   y:lineobj.y,
-                  label: `${lineobj.x},${lineobj.y}`
+                  label: `${labely}`
                 });
               }
               if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
+				let labely = parseInt(lineobj.y);  
                 labels_data.push({
                   x:lineobj.x,
                   y:lineobj.y,
-                  label: `${lineobj.x},${lineobj.y}`
+                  label: `${labely}`
                 });
               }
             })
@@ -58,69 +69,54 @@ class ChartShow extends React.Component {
           if(!isnodata){
             _.map(currealtimedatalist,(currealtimedata,index)=>{
                 if((isonlylast && index===currealtimedatalist.length-1) || !isonlylast){
-                const {rawdata_55,rawdata_ee} = currealtimedata;
-                let data_vt;
-                const data_55 = _.slice(rawdata_55,50,250);
-                const data_ee = _.slice(rawdata_ee,50,250);
-                let tee = 0;
-                let linedata = [];//结果线
-                let linedatavt = [];//偏差线
-                let linedataraw = [];//原始线
-                let teeverifydata = verifydata[currealtimedata.verifydataflag];
-                if(!!teeverifydata){
-                  let data_v = _.slice(teeverifydata.rawdata_ee,50,250);
-                  let tee = 0;
-                  data_vt=[];
-                  _.map(data_v,(v,index)=>{
-                    tee = tee + data_v[index];
-                    data_vt.push(tee);
-                    linedatavt.push({x:data_55[index],y:tee});
-                  });
-                }
-
-
-                _.map(data_55,(v,index)=>{
-                  tee = tee + data_ee[index];
-                  let teetmp = tee;
-                  if(!!data_vt){
-                    teetmp -= data_vt[index];
-                  }
-                  linedataraw.push({x:v,y:tee});
-                  linedata.push({x:v,y:teetmp});
-                });
-                const line_y_max = _.maxBy(linedata,'y');
-                const line_y_min = _.minBy(linedata,'y');
-                _.map(linedata,(lineobj,index)=>{
-                  if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
-                    labels_data.push({
-                      x:lineobj.x,
-                      y:lineobj.y,
-                      label: `${lineobj.x},${lineobj.y}`
-                    });
-                  }
-                  if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
-                    labels_data.push({
-                      x:lineobj.x,
-                      y:lineobj.y,
-                      label: `${lineobj.x},${lineobj.y}`
-                    });
-                  }
-                })
-                lines.push({
-                  data:linedata,
-                  color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
-                });
-                if(!isonlyfinal){
-                  lines.push({
-                    data:linedatavt,
-                    color:'#' + parseInt(0xff0000).toString(16)
-                  });
-                  lines.push({
-                    data:linedataraw,
-                    color:'#' + parseInt(0x00ff00).toString(16)
-                  });
-                }
-              }
+					let teeverifydata = verifydata[currealtimedata.verifydataflag];
+					let result = getlinedata(currealtimedata,teeverifydata);
+					let linedata = result.linedata;
+					let linedatavt = result.linedatavt;
+					let linedataraw = result.linedataraw;
+				
+					const line_y_max = _.maxBy(linedata,'y');
+					const line_y_min = _.minBy(linedata,'y');
+					const line_x_min = _.minBy(linedata,'x');
+					diff = parseInt(diff);
+					labels_data.push({
+						  x:line_x_min.x,
+						  y:line_y_max.y,
+						  label: `相差:${diff}`
+					});
+					_.map(linedata,(lineobj,index)=>{
+					  if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
+						let labely = parseInt(lineobj.y);
+						labels_data.push({
+						  x:lineobj.x,
+						  y:lineobj.y,
+						  label: `${labely}`
+						});
+					  }
+					  if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
+						  let labely = parseInt(lineobj.y);
+						labels_data.push({
+						  x:lineobj.x,
+						  y:lineobj.y,
+						  label: `${labely}`
+						});
+					  }
+					})
+					lines.push({
+					  data:linedata,
+					  color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+					});
+					if(!isonlyfinal){
+					  lines.push({
+						data:linedatavt,
+						color:'#' + parseInt(0xff0000).toString(16)
+					  });
+					  lines.push({
+						data:linedataraw,
+						color:'#' + parseInt(0X0000ff).toString(16)
+					  });
+					}
+				  }
             });
 
           }
@@ -140,7 +136,7 @@ class ChartShow extends React.Component {
                 </View>
             );
         }
-        // console.log(`lines:${JSON.stringify(lines)}`);
+        console.log(`=====>${JSON.stringify(lines)}`);
         return (
             <ChartXY height={height} width={width} lines={lines} labels_data={labels_data}/>
         );

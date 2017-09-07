@@ -235,7 +235,7 @@ class MainPage extends Component {
 }
 
 const mapStateToProps = ({serialportdata}) => {
-    const {currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata,isonlyfinal,isonlylast} = serialportdata;
+    let {currealtimedatalist,isserialportopen,isverifydata,verifydataflag,verifydata,isonlyfinal,isonlylast} = serialportdata;
     let createtimestring = '';
     if(currealtimedatalist.length > 0){
       createtimestring = _.last(currealtimedatalist).createtimestring;

@@ -48,11 +48,15 @@ exports.parsedata = (hexdata)=>{
   };
   const datax = getdata(bufx);
   const datay = getdata(bufy);
-
+  let rawdata_ee = [];
+  _.map(datay.data,(data)=>{
+	  data = data/10;
+	  rawdata_ee.push(data);
+  });
   const payload = {
     rawdata_hex:hexdata,
     rawdata_55:datax.data,
-    rawdata_ee:datay.data,
+    rawdata_ee:rawdata_ee,
   };
   console.log(`最终:payload:${JSON.stringify(payload)}`);
   return payload;
