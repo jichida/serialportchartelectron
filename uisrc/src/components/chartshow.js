@@ -26,38 +26,38 @@ class ChartShow extends React.Component {
             let linedata = [];
 
             _.map(data_55,(v,index)=>{
-			  tee += data_ee[index];
-              linedata.push({x:v,y:tee});
+			          tee += data_ee[index];
+                linedata.push({x:v,y:tee});
             });
             const line_y_max = _.maxBy(linedata,'y');
             const line_y_min = _.minBy(linedata,'y');
-			const line_x_min = _.minBy(linedata,'x');
-			let diff = line_y_max.y - line_y_min.y;
+      			const line_x_min = _.minBy(linedata,'x');
+      			let diff = line_y_max.y - line_y_min.y;
 
-			diff = parseInt(diff);
-			labels_data.push({
-                  x:line_x_min.x,
-                  y:line_y_max.y,
-                  label: `相差:${diff}`
-            });
+      			diff = parseInt(diff);
+      			labels_data.push({
+                        x:line_x_min.x,
+                        y:line_y_max.y,
+                        label: `相差:${diff}`
+                  });
             _.map(linedata,(lineobj,index)=>{
               if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
-				let labely = parseInt(lineobj.y);
-                labels_data.push({
-                  x:lineobj.x,
-                  y:lineobj.y,
-                  label: `${labely}`
-                });
-              }
+      				let labely = parseInt(lineobj.y);
+                      labels_data.push({
+                        x:lineobj.x,
+                        y:lineobj.y,
+                        label: `${labely}`
+                      });
+                    }
               if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
-				let labely = parseInt(lineobj.y);
-                labels_data.push({
-                  x:lineobj.x,
-                  y:lineobj.y,
-                  label: `${labely}`
-                });
-              }
-            })
+      				let labely = parseInt(lineobj.y);
+                      labels_data.push({
+                        x:lineobj.x,
+                        y:lineobj.y,
+                        label: `${labely}`
+                      });
+                    }
+                  })
             lines.push({
               data:linedata,
               color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
@@ -69,55 +69,55 @@ class ChartShow extends React.Component {
           if(!isnodata){
             _.map(currealtimedatalist,(currealtimedata,index)=>{
                 if((isonlylast && index===currealtimedatalist.length-1) || !isonlylast){
-					let teeverifydata = verifydata[currealtimedata.verifydataflag];
-					let result = getlinedata(currealtimedata,teeverifydata);
-					let linedata = result.linedata;
-					let linedatavt = result.linedatavt;
-					let linedataraw = result.linedataraw;
+          					let teeverifydata = verifydata[currealtimedata.verifydataflag];
+          					let result = getlinedata(currealtimedata,teeverifydata);
+          					let linedata = result.linedata;
+          					let linedatavt = result.linedatavt;
+          					let linedataraw = result.linedataraw;
 
-					const line_y_max = _.maxBy(linedata,'y');
-					const line_y_min = _.minBy(linedata,'y');
-					const line_x_min = _.minBy(linedata,'x');
-          let diff = line_y_max.y - line_y_min.y;
-					diff = parseInt(diff);
-					labels_data.push({
-						  x:line_x_min.x,
-						  y:line_y_max.y,
-						  label: `相差:${diff}`
-					});
-					_.map(linedata,(lineobj,index)=>{
-					  if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
-						let labely = parseInt(lineobj.y);
-						labels_data.push({
-						  x:lineobj.x,
-						  y:lineobj.y,
-						  label: `${labely}`
-						});
-					  }
-					  if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
-						  let labely = parseInt(lineobj.y);
-						labels_data.push({
-						  x:lineobj.x,
-						  y:lineobj.y,
-						  label: `${labely}`
-						});
-					  }
-					})
-					lines.push({
-					  data:linedata,
-					  color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
-					});
-					if(!isonlyfinal){
-					  lines.push({
-						data:linedatavt,
-						color:'#' + parseInt(0xff0000).toString(16)
-					  });
-					  lines.push({
-						data:linedataraw,
-						color:'#' + parseInt(0X0000ff).toString(16)
-					  });
-					}
-				  }
+          					const line_y_max = _.maxBy(linedata,'y');
+          					const line_y_min = _.minBy(linedata,'y');
+          					const line_x_min = _.minBy(linedata,'x');
+                    let diff = line_y_max.y - line_y_min.y;
+          					diff = parseInt(diff);
+          					labels_data.push({
+          						  x:line_x_min.x,
+          						  y:line_y_max.y,
+          						  label: `相差:${diff}`
+          					});
+          					_.map(linedata,(lineobj,index)=>{
+          					  if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
+          						let labely = parseInt(lineobj.y);
+          						labels_data.push({
+          						  x:lineobj.x,
+          						  y:lineobj.y,
+          						  label: `${labely}`
+          						});
+          					  }
+          					  if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
+          						  let labely = parseInt(lineobj.y);
+          						labels_data.push({
+          						  x:lineobj.x,
+          						  y:lineobj.y,
+          						  label: `${labely}`
+          						});
+          				}
+      					})
+      					lines.push({
+      					  data:linedata,
+      					  color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+      					});
+      					if(!isonlyfinal){
+        					  lines.push({
+        						data:linedatavt,
+        						color:'#' + parseInt(0xff0000).toString(16)
+        					  });
+        					  lines.push({
+        						data:linedataraw,
+        						color:'#' + parseInt(0X0000ff).toString(16)
+        					  });
+        					}
+      				  }
             });
 
           }

@@ -73,6 +73,16 @@ export function* apiflow(){//仅执行一次
     // const {payload} = result;
     // const {line1,line2} = sampledata;
     sampledata.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
+    sampledata.verifydataflag = 0;
+    let verifydata = {...sampledata};
+    sampledata.verifydata = {
+      created_at:verifydata.created_at,
+      rawdata_hex: verifydata.rawdata_hex,
+      rawdata_55:verifydata.rawdata_55,
+      rawdata_ee:verifydata.rawdata_ee,
+      verifydataflag:verifydata.verifydataflag,
+      createtimestring:verifydata.createtimestring,
+    };
     yield put(getrealtimedata_result(sampledata));
 
   });
@@ -82,14 +92,21 @@ export function* apiflow(){//仅执行一次
     console.log(`options:${JSON.stringify(options)}`);
     // const options = {page:1,limit:10};
     const {page:current,limit:pageSize} = options;
-    const {line1,line2} = sampledata;
+
     let docs_total = [];
     for(let i = 0; i< 42; i++){
-      docs_total.push({
-          line1,
-          line2,
-          createtimestring:moment().format("YYYY-MM-DD HH:mm:ss")
-        });
+      sampledata.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
+      sampledata.verifydataflag = 0;
+      let verifydata = {...sampledata};
+      sampledata.verifydata = {
+        created_at:verifydata.created_at,
+        rawdata_hex: verifydata.rawdata_hex,
+        rawdata_55:verifydata.rawdata_55,
+        rawdata_ee:verifydata.rawdata_ee,
+        verifydataflag:verifydata.verifydataflag,
+        createtimestring:verifydata.createtimestring,
+      };
+      docs_total.push(sampledata);
     }
     let docs = _.sampleSize(docs_total,pageSize);
     const payload = {

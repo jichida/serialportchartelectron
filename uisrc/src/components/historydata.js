@@ -10,7 +10,7 @@ import {
   querydata_request,
   ui_changedate,
 } from '../actions';
-
+import {getlinedata} from './getlinedata';
 import "../antd.min.css";
 import "../historydata.css";
 
@@ -48,10 +48,53 @@ class Historydata extends React.Component {
         const liwidth =  (window.innerWidth-270)/3;
         let itemsco = [];
         _.map(datalist, (v, key)=>{
+          let lines = [];
+          let labels_data = [];
+
+          let teeverifydata = v.verifydata;
+          let result = getlinedata(v,teeverifydata);
+          let linedata = result.linedata;
+          let linedatavt = result.linedatavt;
+          let linedataraw = result.linedataraw;
+
+          const line_y_max = _.maxBy(linedata,'y');
+          const line_y_min = _.minBy(linedata,'y');
+          const line_x_min = _.minBy(linedata,'x');
+          let diff = line_y_max.y - line_y_min.y;
+          diff = parseInt(diff);
+          labels_data.push({
+              x:line_x_min.x,
+              y:line_y_max.y,
+              label: `相差:${diff}`
+          });
+          _.map(linedata,(lineobj,index)=>{
+            if(lineobj.y === line_y_max.y && lineobj.x === line_y_max.x){
+              let labely = parseInt(lineobj.y);
+              labels_data.push({
+                x:lineobj.x,
+                y:lineobj.y,
+                label: `${labely}`
+              });
+              }
+              if(lineobj.y === line_y_min.y && lineobj.x === line_y_min.x){
+                let labely = parseInt(lineobj.y);
+              labels_data.push({
+                x:lineobj.x,
+                y:lineobj.y,
+                label: `${labely}`
+              });
+          }
+          })
+          lines.push({
+            data:linedata,
+            color:'#' + parseInt(Math.random() * 0xffffff).toString(16)
+          });
+
+
             const {line1,line2,createtimestring} = v;
             itemsco.push(<li key={key} style={{height : liheight+"px", width : liwidth+"px", overflow : "hidden"}}>
                 <div style={{paddingLeft: "10px"}}>测量时间： {createtimestring} </div>
-                <ChartXY height={liheight} width={liwidth} line1={line1} line2={line2}/>
+                <ChartXY height={liheight} width={liwidth} lines={lines} labels_data={labels_data}/>
             </li>);
         });
         return (

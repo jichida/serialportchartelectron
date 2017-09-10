@@ -11,6 +11,14 @@ let SerialportchartSchema = new Schema({
   rawdata_ee:[],
   verifydataflag:Number,
   createtimestring:String,
+  verifydata:{
+    created_at:{ type: Date, default:new Date()},
+    rawdata_hex: String,
+    rawdata_55:[],
+    rawdata_ee:[],
+    verifydataflag:Number,
+    createtimestring:String,
+  }
 });
 
 SerialportchartSchema.plugin(mongoosePaginate);

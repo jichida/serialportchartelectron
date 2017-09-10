@@ -32,11 +32,29 @@ exports.insertdb =(arg,hexdata,callback)=>{
   let payload = parse.parsedata(hexdata);
   payload.createtimestring = moment().format("YYYY-MM-DD HH:mm:ss");
   payload.verifydataflag = arg.verifydataflag;
-  let dbModel = DBModels.SerialportchartModel;
-  let entity = new dbModel(payload);
-  entity.save((err,newdata)=>{
-    callback(err,newdata);
+
+  let dbModel = DBModels.VerifydataModel;
+  dbModel.findOne({verifydataflag:arg.verifydataflag},(err,verifydata)=>{
+    if(!err && !!verifydata){
+      payload.verifydata = {
+        created_at:verifydata.created_at,
+        rawdata_hex: verifydata.rawdata_hex,
+        rawdata_55:verifydata.rawdata_55,
+        rawdata_ee:verifydata.rawdata_ee,
+        verifydataflag:verifydata.verifydataflag,
+        createtimestring:verifydata.createtimestring,
+      };
+      dbModel = DBModels.SerialportchartModel;
+      let entity = new dbModel(payload);
+      entity.save((err,newdata)=>{
+        callback(err,newdata);
+      });
+    }
+    else{
+      callback('找不到校验数据',null);
+    }
   });
+
 }
 
 exports.querydb =(query,options,callback)=>{
@@ -45,7 +63,8 @@ exports.querydb =(query,options,callback)=>{
     rawdata_55:1,
     rawdata_ee:1,
     createtimestring:1,
-    _id:1
+    _id:1,
+    verifydata:1,
   };
   let dbModel = DBModels.SerialportchartModel;
   dbModel.paginate(query,options,(err,result)=>{

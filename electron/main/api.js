@@ -17,22 +17,24 @@ exports.start = ()=>{
     }
     console.log(`getrealtimedata:${JSON.stringify(arg)}`);
     serialport.start_measure(arg,(err,result)=>{
-        console.log(`getrealtimedata===>${JSON.stringify(result)}`);
+        let payload = {
+          _id:result._id,
+          rawdata_55:result.rawdata_55,
+          rawdata_ee:result.rawdata_ee,
+          verifydataflag:result.verifydataflag,
+          createtimestring:result.createtimestring,
+          verifydata:result.verifydata
+        };
+        console.log(`getrealtimedata===>${JSON.stringify(payload)}`);
         event.sender.send('getrealtimedata_result', JSON.stringify({
-            payload:{
-              _id:result._id,
-              rawdata_55:result.rawdata_55,
-              rawdata_ee:result.rawdata_ee,
-              verifydataflag:result.verifydataflag,
-              createtimestring:result.createtimestring
-            }
+            payload
         })
     );
     });
 
   })
 
-  ipcMain.on('queryrealtimedata', (event, arg) => {
+  ipcMain.on('querydata', (event, arg) => {
     try{
       if(typeof arg === 'string'){
           arg = JSON.parse(arg);
@@ -41,14 +43,15 @@ exports.start = ()=>{
     catch(e){
       console.log(e);
     }
-    console.log(`queryrealtimedata:${JSON.stringify(arg)}`);
+    console.log(`querydata:${JSON.stringify(arg)}`);
     let {query,option} = arg;
     query = query || {};
     option = option || {};
     db.querydb(query,option,(err,result)=>{
-        console.log(`queryrealtimedata===>${JSON.stringify(result)}`);
-        event.sender.send('queryrealtimedata_result', JSON.stringify({
-          payload:result
+        let payload = result;
+        console.log(`querydata===>${JSON.stringify(payload)}`);
+        event.sender.send('querydata_result', JSON.stringify({
+          payload
         }));
     });
   });
@@ -65,9 +68,10 @@ exports.start = ()=>{
     console.log(`serialport:${JSON.stringify(arg)}`);
     let {open} = arg;
     serialport.setopen(open,(err,result)=>{
-      console.log(`serialport===>${JSON.stringify(result)}`);
+      let payload = result;
+      console.log(`serialport===>${JSON.stringify(payload)}`);
       event.sender.send('serialport_result', JSON.stringify({
-        payload:result
+        payload
       }));
     });
   });
@@ -125,9 +129,10 @@ exports.start = ()=>{
         }
         console.log(`queryverifydata:${JSON.stringify(arg)}`);
         db.querydb_verifydata(arg,(err,result)=>{
-          console.log(`queryverifydata===>${JSON.stringify(result)}`);
+          let payload = result;
+          console.log(`queryverifydata===>${JSON.stringify(payload)}`);
           event.sender.send('queryverifydata_result', JSON.stringify({
-            payload:result
+            payload
           }));
         });
       });
