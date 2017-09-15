@@ -22,7 +22,7 @@ const openSerialWork = (portnumber,callback)=>{
 
   port.on('data', (data)=> {
     hexdata += data.toString('hex');
-	console.log(`readfrom serialport:${hexdata.length/2}`);
+	  console.log(`readfrom serialport:${hexdata.length/2}`);
     if(hexdata.length >= hex_data_len){
       console.log(`get one data!`);
       ev.evEmitter.emit('get_buf',hexdata);
@@ -91,6 +91,7 @@ exports.setopen =(open,callback)=>{
     }
     const serialport = process.env.SERIAL_PORT || 'COM4';
     console.log(`open serialport:${serialport}`);
+    ev.evEmitter.removeAllListeners(['write_buf']);
     openSerialWork(serialport,callback);
   }
   else{
